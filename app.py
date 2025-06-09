@@ -30,38 +30,29 @@ with st.expander("📚 Click here to view all sections", expanded=False):
 # 概览卡片区块（采用列布局）
 with st.container():
     # 创建五行一列的布局
-    st.markdown("---")
-    st.markdown("## 🧭 Contents")
+    # 项目介绍内容
+st.markdown("""
+---
 
-    # 第一页
-    st.markdown("""
-    ### 📘 01 Introduction
-    Learn about the background, goals, and usage of this project.
-    """)
+### 🎯 Objective
+This app aims to help users understand and apply linear regression in analyzing trends and predicting the popularity of YouTube videos. It simplifies complex concepts and enables intuitive interaction with the data.
 
-    # 第二页
-    st.markdown("""
-    ### 📊 02 Dataset Visualization
-    Explore the dataset through visualizations to identify patterns and trends.
-    """)
+### 💡 Motivation
+- YouTube content creators, marketers, and analysts need effective tools to anticipate video performance.
+- By predicting future popularity using historical metrics, stakeholders can make informed decisions on content planning, advertising, and engagement.
+- Our app demonstrates the power of machine learning to support real-world decisions.
 
-    # 第三页
-    st.markdown("""
-    ### 🧠 03 Model Architecture
-    Understand the model's structure, features used, and evaluation metrics.
-    """)
+### 🛠️ Technologies Used
+- **Python** & **Streamlit** for building the interface
+- **Pandas**, **Seaborn**, and **Matplotlib** for data processing and visualization
+- **Scikit-learn** for building and evaluating the linear regression model
 
-    # 第四页
-    st.markdown("""
-    ### 🔮 04 Prediction
-    Input new data to get predictions and interpret outcomes.
-    """)
+### 🧪 Dataset
+The dataset includes attributes such as view count, likes, comments, and video duration. These features are used to model and predict video popularity using linear regression.
 
-    # 第五页
-    st.markdown("""
-    ### 📈 05 Business Prospects
-    Discuss potential business or social insights based on model outputs.
-    """)
+---
+""")
+
 
 # 提示用户操作
 st.info("📌 Use the left navigation menu to switch between different functional pages.")

@@ -1,28 +1,42 @@
 import streamlit as st
 
-st.title("📈 Business Case")
+# 设置页面标题和图标
+st.set_page_config(page_title="📘 01 Introduction", layout="wide")
 
+# 页面主标题
 st.markdown("""
-### 💡 Problem:
-Many jewelry companies struggle to price diamonds appropriately.
-Incorrect pricing may lead to loss of revenue or customer dissatisfaction.
+    <h1 style='text-align: center;'>📘 01 Introduction</h1>
+""", unsafe_allow_html=True)
 
-### 🎯 Goal:
-Build a linear regression model that helps estimate the price of a diamond based on its characteristics (e.g., carat, cut, color, clarity, etc.).
+# 项目简介
+st.markdown("""
+### 🎯 Project Goal
+This app aims to help users analyze YouTube video trends and predict their popularity using a linear regression model.
 
-### 📊 Dataset Description:
-We are using the `diamonds` dataset from Seaborn, which contains over 50,000 records and the following features:
-- `carat`: Weight of the diamond
-- `cut`: Quality of the cut (Fair, Good, Very Good, Premium, Ideal)
-- `color`: Diamond color, from D (best) to J (worst)
-- `clarity`: A measurement of how clear the diamond is
-- `depth`: Total depth percentage
-- `table`: Width of top of diamond relative to widest point
-- `price`: Price in US dollars (target variable)
+### ℹ️ Why It Matters
+- YouTube is one of the largest video platforms with billions of views daily.
+- Understanding video performance is valuable for creators, marketers, and researchers.
+- Predictive modeling can offer data-driven insights into what makes content popular.
 
-### 🧩 Business Impact:
-This model could be used by diamond retailers to:
-- Set optimal pricing strategies
-- Understand what features affect price most
-- Improve customer trust through data-backed pricing
+### ⚙️ Method Overview
+We apply **linear regression** to predict video views using variables such as:
+- Title length
+- Likes
+- Comments
+- Duration
+
+The model is trained on a public dataset of real YouTube videos.
+
+### 📚 Use Cases
+- 🎥 Creators: Optimize video titles and tags to increase visibility.
+- 📈 Marketers: Analyze content trends to guide strategy.
+- 🧠 Students: Understand how machine learning works in media analysis.
+
+### 🛠 Technologies Used
+- Python 🐍
+- Streamlit 📊
+- Pandas, Seaborn, scikit-learn
+
+---
+📌 Use the left sidebar to explore the dataset, understand the model, and try making your own predictions.
 """)

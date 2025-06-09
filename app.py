@@ -1,34 +1,43 @@
 import streamlit as st
 
-# 设置页面配置
+# 设置网页配置
 st.set_page_config(
-    page_title="📊 YouTube Video Analysis App",
-    page_icon="📊",
+    page_title="📊 YouTube Video Analysis APP",
     layout="wide"
 )
 
-# 页面标题与说明
-st.markdown("# 📊 YouTube Video Analysis App")
-st.markdown(
-    "This platform uses a linear regression model to analyze YouTube video trends and predict popularity. "
-    "Use the sidebar on the left to navigate to different functional pages."
-)
+# 页面主标题
+st.markdown("""
+    <h1 style='text-align: center;'>📊 YouTube Video Analysis</h1>
+""", unsafe_allow_html=True)
 
-# 显示每个子页面功能说明
-st.markdown("## 📚 Contents")
+# 页面说明文字
+st.markdown("""
+    <p style='text-align: center;'>
+    This platform uses a linear regression model to address real-world business or social problems. <br>
+    Use the sidebar on the left or the overview buttons below to navigate to different functional pages:
+    </p>
+""", unsafe_allow_html=True)
 
-# 子页面卡片介绍（非跳转，仅说明用途）
-st.markdown("### 📘 01 Introduction")
-st.markdown("- Learn about the background, goals, and usage of this project.")
+# 概览按钮区块（模拟导航卡片）
+st.markdown("---")
+st.markdown("## 🧭 Navigation Overview")
 
-st.markdown("### 📊 02 Dataset Visualization")
-st.markdown("- Explore the dataset through visualizations to identify patterns and trends.")
+# 采用五个列按钮，每行一个按钮
+if st.button("🧭 Go to 01 Introduction"):
+    st.switch_page("pages/01_Introduction.py")
 
-st.markdown("### 🧠 03 Model Architecture")
-st.markdown("- Understand the model's structure, features used, and evaluation metrics.")
+if st.button("📊 Go to 02 Dataset Visualization"):
+    st.switch_page("pages/02 Dataset Visualization.py")
 
-st.markdown("### 🔮 04 Prediction")
-st.markdown("- Input new data to get predictions and interpret outcomes.")
+if st.button("🧠 Go to 03 Metrics and Model Architecture"):
+    st.switch_page("pages/03 Model Architecture.py")
 
-st.markdown("### 📈 05 Business Prospects")
-st.markdown("- Discuss potential business or social insights based on model outputs.")
+if st.button("🔮 Go to 04 Prediction"):
+    st.switch_page("pages/04_Prediction.py")
+
+if st.button("📈 Go to 05 Business Prospects"):
+    st.switch_page("pages/05_Business_Prospects.py")
+
+# 提示用户操作
+st.info("📌 You can also use the left navigation menu to switch between different functional pages.")

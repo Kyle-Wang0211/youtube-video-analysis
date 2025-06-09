@@ -8,36 +8,60 @@ st.set_page_config(
 
 # 页面主标题
 st.markdown("""
-    <h1 style='text-align: center;'>📊 YouTube Video Analysis</h1>
+    <h1 style='text-align: center;'>📊 YouTube Video Analysis App</h1>
 """, unsafe_allow_html=True)
 
 # 页面说明文字
 st.markdown("""
     <p style='text-align: center;'>
-    This platform uses a linear regression model to address real-world business or social problems. <br>
-    Use the sidebar on the left or the overview buttons below to navigate to different functional pages:
+    This platform uses a linear regression model to analyze YouTube video trends and predict popularity. <br>
+    Use the sidebar on the left or the overview cards below to navigate to different functional pages.
     </p>
 """, unsafe_allow_html=True)
 
-# 概览按钮区块（模拟导航卡片）
-st.markdown("---")
-st.markdown("## 🧭 Navigation Overview")
+# 添加可折叠导航模块
+with st.expander("📚 Click here to view all sections", expanded=False):
+    st.markdown("📘 [01 Introduction](01_Introduction)")
+    st.markdown("📊 [02 Dataset Visualization](02_Dataset_Visualization)")
+    st.markdown("🧠 [03 Model Architecture](03_Model_Architecture)")
+    st.markdown("🔮 [04 Prediction](04_Prediction)")
+    st.markdown("📈 [05 Business Prospects](05_Business_Prospects)")
 
-# 采用五个列按钮，每行一个按钮
-if st.button("🧭 Go to 01 Introduction"):
-    st.switch_page("pages/01_Introduction.py")
+# 概览卡片区块（采用列布局）
+with st.container():
+    # 创建五行一列的布局
+    st.markdown("---")
+    st.markdown("## 🧭 Contents")
 
-if st.button("📊 Go to 02 Dataset Visualization"):
-    st.switch_page("pages/02 Dataset Visualization.py")
+    # 第一页
+    st.markdown("""
+    ### 📘 01 Introduction
+    Learn about the background, goals, and usage of this project.
+    """)
 
-if st.button("🧠 Go to 03 Metrics and Model Architecture"):
-    st.switch_page("pages/03 Model Architecture.py")
+    # 第二页
+    st.markdown("""
+    ### 📊 02 Dataset Visualization
+    Explore the dataset through visualizations to identify patterns and trends.
+    """)
 
-if st.button("🔮 Go to 04 Prediction"):
-    st.switch_page("pages/04_Prediction.py")
+    # 第三页
+    st.markdown("""
+    ### 🧠 03 Model Architecture
+    Understand the model's structure, features used, and evaluation metrics.
+    """)
 
-if st.button("📈 Go to 05 Business Prospects"):
-    st.switch_page("pages/05_Business_Prospects.py")
+    # 第四页
+    st.markdown("""
+    ### 🔮 04 Prediction
+    Input new data to get predictions and interpret outcomes.
+    """)
+
+    # 第五页
+    st.markdown("""
+    ### 📈 05 Business Prospects
+    Discuss potential business or social insights based on model outputs.
+    """)
 
 # 提示用户操作
-st.info("📌 You can also use the left navigation menu to switch between different functional pages.")
+st.info("📌 Use the left navigation menu to switch between different functional pages.")

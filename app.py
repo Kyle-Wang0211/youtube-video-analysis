@@ -27,10 +27,7 @@ with st.expander("📚 Click here to view all sections", expanded=False):
     st.markdown("🔮 [04 Prediction](04_Prediction)")
     st.markdown("📈 [05 Business Prospects](05_Business_Prospects)")
 
-# 概览卡片区块（采用列布局）
-with st.container():
-    # 创建五行一列的布局
-    # 项目介绍内容
+
 st.markdown("""
 ---
 

@@ -10,15 +10,20 @@ st.set_page_config(
 # 页面顶部主标题（居中）
 st.markdown("<h1 style='text-align: center;'>📊 YouTube Video Analysis App</h1>", unsafe_allow_html=True)
 
-# 左侧固定导航菜单
-section = st.sidebar.selectbox("📚 Contents", [
-    "🏠 Home",
-    "📘 01 Introduction",
-    "📊 02 Dataset Visualization",
-    "🧠 03 Model Architecture",
-    "🔮 04 Prediction",
-    "📈 05 Business Prospects"
-])
+# 在侧边栏放置导航菜单
+with st.sidebar:
+    st.title("📚 Contents")
+    section = st.selectbox(
+        "Select a section",
+        [
+            "Home",
+            "01 Introduction",
+            "02 Dataset Visualization",
+            "03 Model Architecture",
+            "04 Prediction",
+            "05 Business Prospects"
+        ]
+    )
 
 
 

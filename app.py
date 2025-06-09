@@ -1,16 +1,17 @@
 import streamlit as st
 
-# 设置页面配置
+
+# 页面配置
 st.set_page_config(
     page_title="📊 YouTube Video Analysis App",
     layout="wide"
 )
 
-# 🚨 标题：永远最上方
+# 页面顶部主标题（居中）
 st.markdown("<h1 style='text-align: center;'>📊 YouTube Video Analysis App</h1>", unsafe_allow_html=True)
 
-# 选择页面
-section = st.selectbox("📚 Contents", [
+# 左侧固定导航菜单
+section = st.sidebar.selectbox("📚 Contents", [
     "🏠 Home",
     "📘 01 Introduction",
     "📊 02 Dataset Visualization",

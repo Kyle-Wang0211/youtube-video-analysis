@@ -1,51 +1,34 @@
 import streamlit as st
 
-# 设置网页的标题与图标
+# 设置页面配置
 st.set_page_config(
     page_title="📊 YouTube Video Analysis App",
     page_icon="📊",
     layout="wide"
 )
 
-# 页面标题
-st.markdown("""
-    <h1 style='text-align: center;'>📊 YouTube Video Analysis App</h1>
-""", unsafe_allow_html=True)
+# 页面标题与说明
+st.markdown("# 📊 YouTube Video Analysis App")
+st.markdown(
+    "This platform uses a linear regression model to analyze YouTube video trends and predict popularity. "
+    "Use the sidebar on the left to navigate to different functional pages."
+)
 
-# 页面简介
-st.markdown("""
-This platform uses a linear regression model to address real-world business or social problems through the analysis of YouTube video datasets.
-Use the sidebar on the left or click on the overview cards below to navigate to each functional page:
-""")
+# 显示每个子页面功能说明
+st.markdown("## 📚 Contents")
 
-# 页面功能卡片（从上到下排列，每个卡片都带跳转链接提示）
-st.markdown("""
----
+# 子页面卡片介绍（非跳转，仅说明用途）
+st.markdown("### 📘 01 Introduction")
+st.markdown("- Learn about the background, goals, and usage of this project.")
 
-### 🔍 01 Introduction
-介绍项目背景、目标与用途，帮助你快速了解本应用。请点击左侧导航栏中的 "01 Introduction" 进入。
+st.markdown("### 📊 02 Dataset Visualization")
+st.markdown("- Explore the dataset through visualizations to identify patterns and trends.")
 
----
+st.markdown("### 🧠 03 Model Architecture")
+st.markdown("- Understand the model's structure, features used, and evaluation metrics.")
 
-### 📊 02 Dataset Visualization
-可视化数据特征，发现变量之间的趋势与模式。请点击左侧导航栏中的 "02 Dataset Visualization" 进入。
+st.markdown("### 🔮 04 Prediction")
+st.markdown("- Input new data to get predictions and interpret outcomes.")
 
----
-
-### 🧠 03 Model Architecture
-说明模型的构建方式与所用指标，帮助理解其预测逻辑。请点击左侧导航栏中的 "03 Model Architecture" 进入。
-
----
-
-### 🔮 04 Prediction
-输入特征，获得模型预测结果，用于实际决策模拟。请点击左侧导航栏中的 "04 Prediction" 进入。
-
----
-
-### 📈 05 Business Prospects
-结合模型输出，讨论预测结果对业务的潜在意义。请点击左侧导航栏中的 "05 Business Prospects" 进入。
-
----
-
-📌 请使用左侧导航菜单，在各功能页面间自由切换。
-""")
+st.markdown("### 📈 05 Business Prospects")
+st.markdown("- Discuss potential business or social insights based on model outputs.")

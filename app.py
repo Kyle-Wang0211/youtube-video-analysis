@@ -1,51 +1,51 @@
 import streamlit as st
 
-# 页面配置
+# 设置网页的标题与图标
 st.set_page_config(
-    page_title="Linear Regression Business App",  # 网页标题
-    page_icon="💼",                                # 网页图标
-    layout="wide"                                 # 页面布局：宽屏
+    page_title="📊 YouTube Video Analysis App",
+    page_icon="📊",
+    layout="wide"
 )
 
-# 应用标题和欢迎语
-st.markdown("<h1 style='text-align: center;'>💼 Linear Regression Business App</h1>", unsafe_allow_html=True)
-st.markdown("### 👋 Welcome!")
-st.write(
-    """
-    This platform uses a linear regression model to address real-world business or social problems.
-    Use the sidebar on the left or the overview cards below to navigate to different functional pages:
-    """
-)
+# 页面标题
+st.markdown("""
+    <h1 style='text-align: center;'>📊 YouTube Video Analysis App</h1>
+""", unsafe_allow_html=True)
 
-# 卡片式模块导航（分栏排布）
-col1, col2, col3 = st.columns(3)
-col4, col5 = st.columns(2)
+# 页面简介
+st.markdown("""
+This platform uses a linear regression model to address real-world business or social problems through the analysis of YouTube video datasets.
+Use the sidebar on the left or click on the overview cards below to navigate to each functional page:
+""")
 
-# 模块 1：项目介绍
-with col1:
-    st.markdown("### 🧭 01 Introduction")
-    st.write("Overview of the project background, objectives, and scope.")  # 项目背景与目标
+# 页面功能卡片（从上到下排列，每个卡片都带跳转链接提示）
+st.markdown("""
+---
 
-# 模块 2：数据可视化
-with col2:
-    st.markdown("### 📊 02 Dataset Visualization")
-    st.write("Visualize key dataset features and identify data patterns.")  # 数据特征展示
+### 🔍 01 Introduction
+介绍项目背景、目标与用途，帮助你快速了解本应用。请点击左侧导航栏中的 "01 Introduction" 进入。
 
-# 模块 3：模型结构
-with col3:
-    st.markdown("### 🧮 03 Model Architecture")
-    st.write("Explain model structure and performance metrics for interpretation.")  # 模型结构解释
+---
 
-# 模块 4：预测结果
-with col4:
-    st.markdown("### 🔮 04 Prediction")
-    st.write("Input variables and obtain predictions from the regression model.")  # 输入特征，获取预测
+### 📊 02 Dataset Visualization
+可视化数据特征，发现变量之间的趋势与模式。请点击左侧导航栏中的 "02 Dataset Visualization" 进入。
 
-# 模块 5：业务意义
-with col5:
-    st.markdown("### 📈 05 Business Prospects")
-    st.write("Interpret prediction results and reflect on business implications.")  # 结合预测探讨商业潜力
+---
 
-# 页脚提示
-st.markdown("---")
-st.info("📌 Use the sidebar to freely navigate across all functional pages.")  # 使用左侧导航栏切换页面
+### 🧠 03 Model Architecture
+说明模型的构建方式与所用指标，帮助理解其预测逻辑。请点击左侧导航栏中的 "03 Model Architecture" 进入。
+
+---
+
+### 🔮 04 Prediction
+输入特征，获得模型预测结果，用于实际决策模拟。请点击左侧导航栏中的 "04 Prediction" 进入。
+
+---
+
+### 📈 05 Business Prospects
+结合模型输出，讨论预测结果对业务的潜在意义。请点击左侧导航栏中的 "05 Business Prospects" 进入。
+
+---
+
+📌 请使用左侧导航菜单，在各功能页面间自由切换。
+""")

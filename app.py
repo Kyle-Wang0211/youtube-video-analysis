@@ -21,11 +21,11 @@ st.markdown("""
 
 # 添加可折叠导航模块
 with st.expander("📚 Click here to view all sections", expanded=False):
-    st.page_link("pages/1_Introduction.py", label="📘 01 Introduction")
-    st.page_link("pages/2_Dataset_Visualization.py", label="📊 02 Dataset Visualization")
-    st.page_link("pages/3_Model_Architecture.py", label="🧠 03 Model Architecture")
-    st.page_link("pages/4_Prediction.py", label="🔮 04 Prediction")
-    st.page_link("pages/5_Business_Prospects.py", label="📈 05 Business Prospects")
+    st.markdown("📘 [01 Introduction](./1_Introduction)")
+    st.markdown("📊 [02 Dataset Visualization](./2_Dataset_Visualization)")
+    st.markdown("🧠 [03 Model Architecture](./3_Model_Architecture)")
+    st.markdown("🔮 [04 Prediction](./4_Prediction)")
+    st.markdown("📈 [05 Business Prospects](./5_Business_Prospects)")
 
 
 st.markdown("""

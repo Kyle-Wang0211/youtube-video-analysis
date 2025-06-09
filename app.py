@@ -6,6 +6,9 @@ st.set_page_config(
     layout="wide"
 )
 
+# 🚨 标题：永远最上方
+st.markdown("<h1 style='text-align: center;'>📊 YouTube Video Analysis App</h1>", unsafe_allow_html=True)
+
 # 选择页面
 section = st.selectbox("📚 Contents", [
     "🏠 Home",
@@ -16,8 +19,7 @@ section = st.selectbox("📚 Contents", [
     "📈 05 Business Prospects"
 ])
 
-# 页面标题
-st.markdown("<h1 style='text-align: center;'>📊 YouTube Video Analysis App</h1>", unsafe_allow_html=True)
+
 
 # 🏠 首页介绍
 if section == "🏠 Home":

@@ -1,24 +1,26 @@
 import streamlit as st
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
 
-st.set_page_config(page_title="YouTube Video Analysis", layout="wide")
+st.set_page_config(
+    page_title="YouTube Video Analysis",
+    page_icon="📊",
+    layout="centered",
+)
 
-st.title("📊 YouTube Video Analysis and Popularity Prediction")
+st.markdown(
+    "<h1 style='text-align: center; color: #1f77b4;'>📊 YouTube Video Analysis and Prediction</h1>",
+    unsafe_allow_html=True
+)
 
-uploaded_file = st.file_uploader("Upload your YouTube dataset (CSV)", type="csv")
+st.markdown(
+    "<h3 style='text-align: center; color: grey;'>Explore trends and predict popularity using machine learning</h3>",
+    unsafe_allow_html=True
+)
 
-if uploaded_file:
-    df = pd.read_csv(uploaded_file)
-    st.subheader("Preview of Dataset")
-    st.dataframe(df.head())
+st.markdown("---")
 
-    st.subheader("📈 Basic Statistics")
-    st.write(df.describe(include='all'))
+model = st.selectbox(
+    "Choose a model for prediction",
+    ["Logistic Regression", "Random Forest", "XGBoost", "Neural Network"]
+)
 
-    if 'views' in df.columns and 'likes' in df.columns:
-        st.subheader("📊 Views vs Likes")
-        fig, ax = plt.subplots()
-        sns.scatterplot(data=df, x='views', y='likes', ax=ax)
-        st.pyplot(fig)
+st.success(f"You selected: {model}")

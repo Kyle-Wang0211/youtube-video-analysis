@@ -1,31 +1,62 @@
 import streamlit as st
 
-# 设置网页配置
+# 设置页面配置
 st.set_page_config(
-    page_title="📊 YouTube Video Analysis APP",
+    page_title="📊 YouTube Video Analysis App",
     layout="wide"
 )
 
 # 页面主标题
-st.markdown("""
-    <h1 style='text-align: center;'>📊 YouTube Video Analysis App</h1>
-""", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>📊 YouTube Video Analysis App</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>This platform uses a linear regression model to analyze YouTube video trends and predict popularity.<br>Use the menu below to navigate between functional modules.</p>", unsafe_allow_html=True)
 
-# 页面说明文字
-st.markdown("""
-    <p style='text-align: center;'>
-    This platform uses a linear regression model to analyze YouTube video trends and predict popularity. <br>
-    Use the sidebar on the left or the overview cards below to navigate to different functional pages.
-    </p>
-""", unsafe_allow_html=True)
+# 选择框导航
+section = st.selectbox("📚 Contents", [
+    "01 Introduction",
+    "02 Dataset Visualization",
+    "03 Model Architecture",
+    "04 Prediction",
+    "05 Business Prospects"
+])
 
-# 添加可折叠导航模块
-with st.expander("📚 Click here to view all sections", expanded=False):
-    st.markdown("📘 [01 Introduction](./1_Introduction)")
-    st.markdown("📊 [02 Dataset Visualization](./2_Dataset_Visualization)")
-    st.markdown("🧠 [03 Model Architecture](./3_Model_Architecture)")
-    st.markdown("🔮 [04 Prediction](./4_Prediction)")
-    st.markdown("📈 [05 Business Prospects](./5_Business_Prospects)")
+# 加载不同子页面内容
+if section == "01 Introduction":
+    st.header("📘 Introduction")
+    st.markdown("""
+    This section explains the background, motivation, and overall goal of the app.  
+    Linear regression is a widely used technique in data analysis to uncover relationships between variables.  
+    In this case, it helps us model how YouTube video features affect view counts or popularity.
+    """)
+
+elif section == "02 Dataset Visualization":
+    st.header("📊 Dataset Visualization")
+    st.markdown("""
+    Visualize variables such as view count, likes, duration, and comments.  
+    Use scatter plots and heatmaps to uncover data trends.
+    """)
+
+elif section == "03 Model Architecture":
+    st.header("🧠 Model Architecture")
+    st.markdown("""
+    The linear regression model is built using scikit-learn.  
+    We preprocess the dataset, split into training/testing sets, and evaluate using R² and MSE.
+    """)
+
+elif section == "04 Prediction":
+    st.header("🔮 Prediction")
+    st.markdown("""
+    You can input custom values (e.g. video duration, like count) to predict expected views.
+    """)
+
+elif section == "05 Business Prospects":
+    st.header("📈 Business Prospects")
+    st.markdown("""
+    Reflect on how prediction results can help content creators make data-driven decisions.  
+    For instance, determine optimal video length, timing, or engagement strategy.
+    """)
+
+# 页脚提示
+st.info("📌 Use the dropdown above to view each section. You are currently viewing: **" + section + "**")
 
 
 st.markdown("""

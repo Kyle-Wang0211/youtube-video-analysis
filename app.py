@@ -20,7 +20,7 @@ with st.sidebar:
         [
             "Home",
             "01 Introduction",
-            "02 Dataset Visualization",
+            "02 Business Case & Data Presentation",
             "03 Model Architecture",
             "04 Prediction",
             "05 Business Prospects"

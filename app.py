@@ -128,7 +128,7 @@ elif section == "02 Dataset Visualization":
     st.pyplot(fig4)
 
     st.markdown("""
-    **Insights:**  
+    - **Insights:**  
     - **Views & Likes** 显示出非常强的相关性。  
     - **Comments** 与 **Views/Likes** 也有中等相关性。  
     - **Dislikes** 相对独立，但也能反映观众反馈。  

@@ -112,7 +112,7 @@ elif section == "02 Dataset Visualization":
     
     # 根据你的项目结构调整路径
     df = load_data("processed_youtube.csv")
-        col1, col2 = st.columns(2)
+    col1, col2 = st.columns(2)
         with col1:
             st.subheader("Dataset Overview")
             st.markdown(f"- **Number of Videos:** {df.shape[0]}")

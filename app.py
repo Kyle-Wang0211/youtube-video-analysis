@@ -77,27 +77,89 @@ elif section == "01 Introduction":
     - Assists marketers in campaign planning using data insights.
     """)
 
-elif section == "02 Dataset Visualization":
-    st.header("📘 Dataset Overview")
+elif section == "02 Business Case & Data Presentation":
+    st.markdown("<h2 style='text-align: center;'>📊 Business Case + Dataset Walkthrough</h2>", unsafe_allow_html=True)
+
+    st.divider()
+
+    # -------- Business Section --------
+    st.subheader("💼 Why Does This Project Matter?")
     st.markdown("""
-    The dataset includes the following attributes for YouTube videos:
-    - View count
-    - Like count
-    - Comment count
-    - Duration
-    - Category, title, and tags
+    In this project, we wanted to explore how data from YouTube videos can help **predict popularity** based on visible metrics like views, likes, comments, and duration.
+
+    ### 📍 Background
+    - YouTube is one of the most popular platforms for content creation.
+    - Creators and marketers often wonder: _What kind of content will perform well?_
+    - We were curious: _Can we build a simple tool that gives clues before uploading?_
+
+    ### 🧠 What We Learned
+    - Some video metrics are strongly connected (e.g., views & likes).
+    - Not all long videos perform well — engagement isn't always about duration.
+    - Even with a simple model (linear regression), predictions are reasonably accurate.
+
+    ### 🎯 Who Might Use This?
+    - **Student Creators** 🧑‍🎓: plan uploads for a school club, vlog, or mini documentary
+    - **Media Clubs** 🎬: estimate which videos get more traction for editing priority
+    - **Beginner Marketers** 📣: test hypotheses without diving into advanced AI
+
+    👉 *We want to emphasize that this is a learning project — not a final product.*
     """)
 
-    st.header("📊 Visualization Insights")
+    st.divider()
+
+    # -------- Dataset Section --------
+    st.subheader("📘 What Does the Dataset Look Like?")
+    st.markdown(f"""
+    - Number of Videos: **{df.shape[0]}**
+    - Number of Columns: **{df.shape[1]}**
+    """)
+    st.dataframe(df.head(5))
+
+    st.markdown("⬇️ Here are some simple visualizations to help us understand the data:")
+
+    # -------- Distribution Charts --------
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    sns.set_style("whitegrid")  # lighter background
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("📺 **View Count Distribution**")
+        fig1, ax1 = plt.subplots()
+        sns.histplot(df["view_count"], bins=40, kde=True, color="#91c8f6", ax=ax1)
+        ax1.set_xlabel("Views")
+        ax1.set_ylabel("Number of Videos")
+        st.pyplot(fig1)
+
+    with col2:
+        st.markdown("👍 **Like Count Distribution**")
+        fig2, ax2 = plt.subplots()
+        sns.histplot(df["like_count"], bins=40, kde=True, color="#f6a091", ax=ax2)
+        ax2.set_xlabel("Likes")
+        ax2.set_ylabel("Number of Videos")
+        st.pyplot(fig2)
+
+    # -------- Correlation Heatmap --------
+    st.markdown("📊 **How Are the Metrics Related?**")
+    numeric_cols = ["view_count", "like_count", "comment_count", "duration"]
+    fig3, ax3 = plt.subplots()
+    sns.heatmap(df[numeric_cols].corr(), annot=True, cmap="PuBuGn", fmt=".2f", ax=ax3)
+    ax3.set_title("Correlation Heatmap")
+    st.pyplot(fig3)
+
     st.markdown("""
-    - **View count** and **like count** are highly correlated.  
-    - Longer videos do not always perform better; the effect of duration is nonlinear.  
-    - Comments often correlate with deeper viewer engagement.
+    ✅ From the heatmap:
+    - View count & like count show strong correlation (~0.85)
+    - Comments are moderately correlated with views/likes
+    - Duration doesn’t have a strong linear relationship — interesting!
+
+    These patterns gave us confidence that a basic linear model could work.
     """)
 
-    st.subheader("🔍 Sample Chart: View Count Distribution")
-    # st.pyplot(fig_view_dist)  # Replace with your actual chart variable
-    st.info("Replace this with your actual chart, e.g., st.pyplot() or st.line_chart()")
+    st.divider()
+    st.caption("📝 This page was built and written entirely by students as part of a midterm project.")
+
 
 
 elif section == "03 Model Architecture":

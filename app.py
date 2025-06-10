@@ -1,12 +1,8 @@
-import streamlit as st
+mport streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-@st.cache(allow_output_mutation=True)
-def load_data():
-    return pd.read_csv("processed_youtube.csv")
 
-df = load_data()
 st.set_page_config(
     page_title="📊 YouTube Video Analysis APP",
     layout="wide"

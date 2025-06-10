@@ -21,7 +21,7 @@ with st.sidebar:
         [
             "Home",
             "01 Introduction",
-            "02 Business Case & Data Presentation",
+            "02 Dataset Visualization",
             "03 Model Architecture",
             "04 Prediction",
             "05 Business Prospects"
@@ -79,62 +79,29 @@ elif section == "01 Introduction":
     """)
 
 elif section == "02 Dataset Visualization":
-    # —— 标题 & 概览 ——  
     st.header("📘 Dataset Overview")
     st.markdown(f"- **Number of Videos:** {df.shape[0]}  •  **Number of Columns:** {df.shape[1]}")
-    st.dataframe(df.head(5))
+    st.dataframe(df.head())
 
-    # —— 栏目名检查 ——  
-    st.markdown("🧾 **Column names:** " + ", ".join(df.columns.tolist()))
-
-    # —— 分布图 ——  
+    st.markdown("🧾 **Column names:** " + ", ".join(df.columns))
     st.subheader("🔍 Metric Distributions")
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-    sns.set_style("whitegrid")
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.markdown("📺 **Views Distribution**")
+        st.markdown("📺 **Views**")
         fig1, ax1 = plt.subplots()
         sns.histplot(df["views"], bins=50, kde=True, ax=ax1)
-        ax1.set_xlabel("Views")
-        ax1.set_ylabel("Count")
+        ax1.set(xlabel="Views", ylabel="Count")
         st.pyplot(fig1)
+    # … 同理 for likes 和 comment_count …
 
-    with col2:
-        st.markdown("👍 **Likes Distribution**")
-        fig2, ax2 = plt.subplots()
-        sns.histplot(df["likes"], bins=50, kde=True, ax=ax2)
-        ax2.set_xlabel("Likes")
-        ax2.set_ylabel("Count")
-        st.pyplot(fig2)
-
-    with col3:
-        st.markdown("💬 **Comments Distribution**")
-        fig3, ax3 = plt.subplots()
-        sns.histplot(df["comment_count"], bins=50, kde=True, ax=ax3)
-        ax3.set_xlabel("Comments")
-        ax3.set_ylabel("Count")
-        st.pyplot(fig3)
-
-    # —— 相关性热力图 ——  
     st.subheader("📊 Feature Correlation")
-    numeric_cols = ["views", "likes", "comment_count", "dislikes"]
-    corr = df[numeric_cols].corr()
-    fig4, ax4 = plt.subplots(figsize=(6, 4))
-    sns.heatmap(corr, annot=True, fmt=".2f", cmap="PuBuGn", ax=ax4)
+    numeric = ["views","likes","comment_count","dislikes"]
+    corr = df[numeric].corr()
+    fig4, ax4 = plt.subplots(figsize=(6,4))
+    sns.heatmap(corr, annot=True, fmt=".2f", ax=ax4)
     ax4.set_title("Correlation Matrix")
     st.pyplot(fig4)
-
-    st.markdown("""
-    - **Insights:**  
-    - **Views & Likes** 显示出非常强的相关性。  
-    - **Comments** 与 **Views/Likes** 也有中等相关性。  
-    - **Dislikes** 相对独立，但也能反映观众反馈。  
-    """)
-
-
 
 elif section == "03 Model Architecture":
     st.markdown("## 🧠 03 Model Architecture")

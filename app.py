@@ -107,8 +107,8 @@ elif section == "02 Dataset Visualization":
     st.header("📊 Data Presentation")
     
     @st.cache_data(show_spinner=False)
-    def load_data(path: str) -> pd.DataFrame:
-        return pd.read_csv(path)
+    def load_data(df: str) -> pd.DataFrame:
+        return df
     
     # 根据你的项目结构调整路径
     df = load_data("data/videos.csv")
@@ -126,15 +126,14 @@ elif section == "02 Dataset Visualization":
         st.subheader("Sample Data")
         st.dataframe(df.head(5), use_container_width=True)
     
-    # 可选：你也可以在这里加上一张简单的分布饼图，帮助快速了解标签分布
-    # is_viral_counts = df["is_viral"].value_counts(normalize=True)
-    # st.subheader("Viral vs Non-viral")
-    # st.plotly_chart(
-    #     px.pie(values=is_viral_counts.values, 
-    #            names=is_viral_counts.index, 
-    #            title="Viral Rate"),
-    #     use_container_width=True
-    # )
+    is_viral_counts = df["is_viral"].value_counts(normalize=True)
+    st.subheader("Viral vs Non-viral")
+    st.plotly_chart(
+         px.pie(values=is_viral_counts.values, 
+                names=is_viral_counts.index, 
+                title="Viral Rate"),
+         use_container_width=True
+     )
 
 
 elif section == "03 Model Architecture":

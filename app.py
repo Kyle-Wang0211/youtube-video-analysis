@@ -56,8 +56,20 @@ if section == "Home":
     """)
 
 elif section == "01 Introduction":
-    st.markdown("## 🧭 01 Introduction")
-    st.write("This section introduces the project scope and goals.")
+    st.header("🎯 Objective")
+    st.markdown("""
+    This project aims to build an interactive application that demonstrates the power of linear regression in predicting YouTube video performance using historical metrics.  
+    It simplifies technical concepts for non-technical users and supports real-world decision-making.
+    """)
+
+    st.header("💡 Motivation")
+    st.markdown("""
+    In the digital age, YouTube creators and marketers need to forecast how content will perform to optimize engagement and growth.  
+    This app:
+    - Helps users understand what makes videos popular.
+    - Provides an educational tool for learning regression-based prediction.
+    - Assists marketers in campaign planning using data insights.
+    """)
 
 elif section == "02 Dataset Visualization":
     st.markdown("## 📊 02 Dataset Visualization")

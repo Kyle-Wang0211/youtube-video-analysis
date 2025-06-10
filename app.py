@@ -1,6 +1,12 @@
 import streamlit as st
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+@st.cache(allow_output_mutation=True)
+def load_data():
+    return pd.read_csv("processed_youtube.csv")
 
-# 设置网页配置
+df = load_data()
 st.set_page_config(
     page_title="📊 YouTube Video Analysis APP",
     layout="wide"
@@ -72,8 +78,27 @@ elif section == "01 Introduction":
     """)
 
 elif section == "02 Dataset Visualization":
-    st.markdown("## 📊 02 Dataset Visualization")
-    st.write("This section will include visualizations of dataset features.")
+    st.header("📘 Dataset Overview")
+    st.markdown("""
+    The dataset includes the following attributes for YouTube videos:
+    - View count
+    - Like count
+    - Comment count
+    - Duration
+    - Category, title, and tags
+    """)
+
+    st.header("📊 Visualization Insights")
+    st.markdown("""
+    - **View count** and **like count** are highly correlated.  
+    - Longer videos do not always perform better; the effect of duration is nonlinear.  
+    - Comments often correlate with deeper viewer engagement.
+    """)
+
+    st.subheader("🔍 Sample Chart: View Count Distribution")
+    # st.pyplot(fig_view_dist)  # Replace with your actual chart variable
+    st.info("Replace this with your actual chart, e.g., st.pyplot() or st.line_chart()")
+
 
 elif section == "03 Model Architecture":
     st.markdown("## 🧠 03 Model Architecture")

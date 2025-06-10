@@ -80,28 +80,20 @@ elif section == "01 Introduction":
 
 elif section == "02 Dataset Visualization":
     st.header("📘 Dataset Overview")
-    st.markdown(f"- **Number of Videos:** {df.shape[0]}  •  **Number of Columns:** {df.shape[1]}")
-    st.dataframe(df.head())
+    # —— 打印一下所有列名，排查用 ——  
+    df.columns = df.columns.str.strip()
+    st.write("所有列名：", df.columns.tolist())
 
-    st.markdown("🧾 **Column names:** " + ", ".join(df.columns))
-    st.subheader("🔍 Metric Distributions")
+    # —— 然后再画相关性热力图 ——  
+    num_cols = df.select_dtypes(include=["int64","float64"]).columns.tolist()
+    st.markdown("🔢 **数值列：** " + ", ".join(num_cols))
 
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown("📺 **Views**")
-        fig1, ax1 = plt.subplots()
-        sns.histplot(df["views"], bins=50, kde=True, ax=ax1)
-        ax1.set(xlabel="Views", ylabel="Count")
-        st.pyplot(fig1)
-    # … 同理 for likes 和 comment_count …
+    corr = df[num_cols].corr()
+    fig, ax = plt.subplots(figsize=(6, 4))
+    sns.heatmap(corr, annot=True, fmt=".2f", ax=ax)
+    ax.set_title("Correlation Matrix")
+    st.pyplot(fig)
 
-    st.subheader("📊 Feature Correlation")
-    numeric = ["views","likes","comment_count","dislikes"]
-    corr = df[numeric].corr()
-    fig4, ax4 = plt.subplots(figsize=(6,4))
-    sns.heatmap(corr, annot=True, fmt=".2f", ax=ax4)
-    ax4.set_title("Correlation Matrix")
-    st.pyplot(fig4)
 
 elif section == "03 Model Architecture":
     st.markdown("## 🧠 03 Model Architecture")

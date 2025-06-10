@@ -111,29 +111,22 @@ elif section == "02 Dataset Visualization":
         return df
     
     # 根据你的项目结构调整路径
-    df = load_data("data/videos.csv")
-    
-    # 两栏布局：左侧概览，右侧预览
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.subheader("Dataset Overview")
-        st.markdown(f"- **Number of Videos:** {df.shape[0]}")
-        st.markdown(f"- **Number of Columns:** {df.shape[1]}")
-        st.markdown("**Columns:**  " + ", ".join(df.columns.tolist()))
-    
-    with col2:
-        st.subheader("Sample Data")
-        st.dataframe(df.head(5), use_container_width=True)
-    
-    is_viral_counts = df["is_viral"].value_counts(normalize=True)
-    st.subheader("Viral vs Non-viral")
-    st.plotly_chart(
-         px.pie(values=is_viral_counts.values, 
-                names=is_viral_counts.index, 
-                title="Viral Rate"),
-         use_container_width=True
-     )
+    df = load_data("processed_youtube.csv")
+        col1, col2 = st.columns(2)
+with col1:
+    st.subheader("Dataset Overview")
+    st.markdown(f"- **Number of Videos:** {df.shape[0]}")
+    st.markdown(f"- **Number of Columns:** {df.shape[1]}")
+    st.markdown("**Columns:**  " + ", ".join(df.columns.tolist()))
+
+with col2:
+    st.subheader("Sample Data")
+    st.dataframe(df.head(5), use_container_width=True)
+
+if "is_viral" in df.columns:
+    st.subheader("Viral vs. Non-Viral Ratio")
+    ratio = df["is_viral"].value_counts(normalize=True)
+    st.bar_chart(ratio)
 
 
 elif section == "03 Model Architecture":

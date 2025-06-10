@@ -79,20 +79,62 @@ elif section == "01 Introduction":
     """)
 
 elif section == "02 Dataset Visualization":
-    st.header("📘 Dataset Overview")
-    # —— 打印一下所有列名，排查用 ——  
-    df.columns = df.columns.str.strip()
-    st.write("所有列名：", df.columns.tolist())
-
-    # —— 然后再画相关性热力图 ——  
-    num_cols = df.select_dtypes(include=["int64","float64"]).columns.tolist()
-    st.markdown("🔢 **数值列：** " + ", ".join(num_cols))
-
-    corr = df[num_cols].corr()
-    fig, ax = plt.subplots(figsize=(6, 4))
-    sns.heatmap(corr, annot=True, fmt=".2f", ax=ax)
-    ax.set_title("Correlation Matrix")
-    st.pyplot(fig)
+    st.title("💼 Business Case & Data Presentation")
+    st.markdown("""
+    **Background**  
+    - 描述公司/产品背景、行业现状  
+    - 目标受众、市场机会  
+    
+    **Objectives**  
+    1. 提升视频内容的用户留存率  
+    2. 增加广告收入与用户付费转化  
+    3. 优化内容推荐模型，提升推荐精准度  
+    
+    **Key Stakeholders**  
+    - 产品团队  
+    - 市场/运营团队  
+    - 数据科学团队  
+    
+    **核心问题**  
+    - 哪些因素能够驱动视频观看量？  
+    - 如何预测一条视频是否会成为“viral”？  
+    - 我们能否基于现有数据给出可操作的增长建议？
+    """)
+    
+    st.markdown("---")
+    
+    # —— 第二部分：Data Presentation ——  
+    st.header("📊 Data Presentation")
+    
+    @st.cache_data(show_spinner=False)
+    def load_data(path: str) -> pd.DataFrame:
+        return pd.read_csv(path)
+    
+    # 根据你的项目结构调整路径
+    df = load_data("data/videos.csv")
+    
+    # 两栏布局：左侧概览，右侧预览
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("Dataset Overview")
+        st.markdown(f"- **Number of Videos:** {df.shape[0]}")
+        st.markdown(f"- **Number of Columns:** {df.shape[1]}")
+        st.markdown("**Columns:**  " + ", ".join(df.columns.tolist()))
+    
+    with col2:
+        st.subheader("Sample Data")
+        st.dataframe(df.head(5), use_container_width=True)
+    
+    # 可选：你也可以在这里加上一张简单的分布饼图，帮助快速了解标签分布
+    # is_viral_counts = df["is_viral"].value_counts(normalize=True)
+    # st.subheader("Viral vs Non-viral")
+    # st.plotly_chart(
+    #     px.pie(values=is_viral_counts.values, 
+    #            names=is_viral_counts.index, 
+    #            title="Viral Rate"),
+    #     use_container_width=True
+    # )
 
 
 elif section == "03 Model Architecture":

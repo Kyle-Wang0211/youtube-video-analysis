@@ -135,7 +135,7 @@ elif section == "03 Dataset Visualization":
     In this section, we will explore the dataset visually to uncover trends and patterns that can provide valuable insights into YouTube video performance.
     """)
 
-        # Distribution of Video Views
+    # Distribution of Video Views
     st.subheader("📊 Distribution of Video Views")
     fig, ax = plt.subplots()
     ax.hist(df['views'], bins=30, color='skyblue', edgecolor='black')
@@ -155,7 +155,7 @@ elif section == "03 Dataset Visualization":
         st.write("Like/Dislike Ratio Column Created:", 'like_dislike_ratio' in df.columns)
     else:
         st.write("Columns 'likes' or 'dislikes' are missing.")
-
+    
     # Ensure the 'like_dislike_ratio' column is created before plotting
     if 'like_dislike_ratio' in df.columns:
         fig, ax = plt.subplots()
@@ -173,9 +173,13 @@ elif section == "03 Dataset Visualization":
     st.write(f"Viral vs Non-Viral video ratio: {viral_ratio.to_dict()}")
     st.bar_chart(viral_ratio)
 
-    # Correlation Matrix
+    # Handle only numeric columns for the correlation matrix
+    numeric_df = df.select_dtypes(include=[float, int])
+
+    # Compute the correlation matrix
+    correlation_matrix = numeric_df.corr()
+
     st.subheader("🔍 Correlation Between Features")
-    correlation_matrix = df.corr()
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f', ax=ax)
     ax.set_title("Correlation Matrix of Features")

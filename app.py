@@ -229,6 +229,23 @@ elif section == "03 Dataset Visualization":
     ax.set_ylabel("Total Likes")
     st.pyplot(fig)
 
+    # Filter out any rows where views are greater than a specified threshold (e.g., 1 billion views)
+    df_filtered = df[df['views'] <= 1e9]
+    
+    # Recalculate views per month after filtering out extreme values
+    views_per_month_filtered = df_filtered.groupby('publish_month')['views'].sum()
+    
+    # Plot the filtered data
+    st.subheader("📊 Views Per Month (Filtered)")
+    fig, ax = plt.subplots(figsize=(10, 6))
+    views_per_month_filtered.plot(kind='bar', ax=ax, color='purple')
+    ax.set_title("Views Per Month")
+    ax.set_xlabel("Month")
+    ax.set_ylabel("Total Views")
+    st.pyplot(fig)
+    # Check for any missing or invalid months
+    st.write(df['publish_month'].value_counts())  # Check how many entries exist for each month
+
 
 elif section == "04 Prediction":
     st.markdown("## 🔮 04 Prediction")

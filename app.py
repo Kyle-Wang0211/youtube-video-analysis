@@ -21,8 +21,8 @@ with st.sidebar:
         [
             "Home",
             "01 Introduction",
-            "02 Dataset Visualization",
-            "03 Model Architecture",
+            "02 Business Case & Data Presentation",
+            "03 Data Visualization",
             "04 Prediction",
             "05 Business Prospects"
         ]
@@ -79,7 +79,7 @@ elif section == "01 Introduction":
     """)
 
 # Second section: Dataset Visualization
-elif section == "02 Dataset Visualization":
+elif section == "02 Business Case & Data Presentation":
     st.title("💼 Business Case & Data Presentation")
     st.markdown("""
     **Background**  
@@ -129,9 +129,56 @@ elif section == "02 Dataset Visualization":
         ratio = df["is_viral"].value_counts(normalize=True)
         st.bar_chart(ratio)
 
-elif section == "03 Model Architecture":
-    st.markdown("## 🧠 03 Model Architecture")
-    st.write("This section describes the structure and logic of the model.")
+elif section == "03 Data Visualization":
+    st.title("📊 Data Visualization")
+    st.markdown("""
+    In this section, we will explore the dataset visually to uncover trends and patterns that can provide valuable insights into YouTube video performance. The following visualizations focus on:
+    - Video views distribution
+    - Like/dislike ratio and comments count
+    - Viral vs non-viral video distribution
+    - Correlations between key features
+    """)
+
+    # Video Views Distribution
+    st.subheader("📊 Distribution of Video Views")
+    fig, ax = plt.subplots()
+    ax.hist(df['views'], bins=30, color='skyblue', edgecolor='black')
+    ax.set_title("Video Views Distribution")
+    ax.set_xlabel("Number of Views")
+    ax.set_ylabel("Frequency")
+    st.pyplot(fig)
+
+    # Like/Dislike Ratio
+    st.subheader("👍👎 Like/Dislike Ratio")
+    df['like_dislike_ratio'] = df['likes'] / (df['dislikes'] + 1)
+    fig, ax = plt.subplots()
+    ax.hist(df['like_dislike_ratio'], bins=30, color='lightgreen', edgecolor='black')
+    ax.set_title("Like/Dislike Ratio Distribution")
+    ax.set_xlabel("Like/Dislike Ratio")
+    ax.set_ylabel("Frequency")
+    st.pyplot(fig)
+
+    # Viral vs Non-Viral
+    st.subheader("📊 Viral vs Non-Viral Video Distribution")
+    viral_ratio = df['is_viral'].value_counts(normalize=True)
+    st.write(f"Viral vs Non-Viral video ratio: {viral_ratio.to_dict()}")
+    st.bar_chart(viral_ratio)
+
+    # Correlation Matrix
+    st.subheader("🔍 Correlation Between Features")
+    correlation_matrix = df.corr()
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f', ax=ax)
+    ax.set_title("Correlation Matrix of Features")
+    st.pyplot(fig)
+
+    # Feature Comparison for Viral vs Non-Viral Videos
+    st.subheader("📊 Feature Comparison: Viral vs Non-Viral Videos")
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.boxplot(x='is_viral', y='views', data=df, ax=ax)
+    ax.set_title("Comparison of Views: Viral vs Non-Viral Videos")
+    st.pyplot(fig)
+
 
 elif section == "04 Prediction":
     st.markdown("## 🔮 04 Prediction")

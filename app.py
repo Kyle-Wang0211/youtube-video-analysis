@@ -239,6 +239,7 @@ elif section == "04 Prediction":
     st.write("This section enables user input and prediction display.")
 
     # Load and preprocess data
+    df = pd.read_csv("processed_youtube.csv")
     df = df.dropna(subset=['views', 'likes', 'comment_count'])
 
     df['publish_time'] = pd.to_datetime(df['publish_time'], errors='coerce')

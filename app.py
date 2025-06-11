@@ -78,6 +78,7 @@ elif section == "01 Introduction":
     - Assists marketers in campaign planning using data insights.
     """)
 
+# Second section: Dataset Visualization
 elif section == "02 Dataset Visualization":
     st.title("💼 Business Case & Data Presentation")
     st.markdown("""
@@ -106,12 +107,9 @@ elif section == "02 Dataset Visualization":
     # —— 第二部分：Data Presentation ——  
     st.header("📊 Data Presentation")
     
-    @st.cache_data(show_spinner=False)
-    def load_data(df: str) -> pd.DataFrame:
-        return df
-    
-    # 根据你的项目结构调整路径
-    df = load_data("processed_youtube.csv")
+    # Load dataset
+    df = load_data()  # Use the defined function to load the data
+
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Dataset Overview")
@@ -127,7 +125,6 @@ elif section == "02 Dataset Visualization":
         st.subheader("Viral vs. Non-Viral Ratio")
         ratio = df["is_viral"].value_counts(normalize=True)
         st.bar_chart(ratio)
-
 
 elif section == "03 Model Architecture":
     st.markdown("## 🧠 03 Model Architecture")

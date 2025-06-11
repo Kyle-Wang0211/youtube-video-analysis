@@ -181,12 +181,12 @@ elif section == "03 Dataset Visualization":
     sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f', ax=ax)
     ax.set_title("Correlation Matrix of Features")
     st.pyplot(fig)
-    st.write("
-    - High Correlation:
-             - Views and Likes: The correlation of 0.88 between views and likes indicates a strong positive correlation, meaning that videos with more views tend to have more likes.
-             - Views and Comment Count: A correlation of 0.80 suggests that videos with more views also tend to receive more comments, which makes sense as more popular videos are likely to get more engagement.
-                ")
-             
+    st.markdown("""
+    High Correlation:
+    - Views and Likes: The correlation of 0.88 between views and likes indicates a strong positive correlation, meaning that videos with more views tend to have more likes.
+    - Views and Comment Count: A correlation of 0.80 suggests that videos with more views also tend to receive more comments, which makes sense as more popular videos are likely to get more engagement.
+    """)
+        
     #Viral vs Non-Viral Videos
     st.subheader("🆚 Comparison: Viral vs Non-Viral Videos")
     fig, ax = plt.subplots(figsize=(10, 6))

@@ -135,7 +135,7 @@ elif section == "03 Dataset Visualization":
     In this section, we will explore the dataset visually to uncover trends and patterns that can provide valuable insights into YouTube video performance.
     """)
 
-    # Distribution of Video Views
+        # Distribution of Video Views
     st.subheader("📊 Distribution of Video Views")
     fig, ax = plt.subplots()
     ax.hist(df['views'], bins=30, color='skyblue', edgecolor='black')
@@ -147,19 +147,25 @@ elif section == "03 Dataset Visualization":
     # Like/Dislike Ratio
     st.subheader("👍👎 Like/Dislike Ratio")
     
-    # Check if 'likes' and 'dislikes' columns exist
+    # Check if 'likes' and 'dislikes' columns exist before calculating the ratio
     if 'likes' in df.columns and 'dislikes' in df.columns:
+        # Create the 'like_dislike_ratio' column
         df['like_dislike_ratio'] = df['likes'] / (df['dislikes'] + 1)  # Avoid division by zero
+        # Debugging step: check if the 'like_dislike_ratio' column is created
+        st.write("Like/Dislike Ratio Column Created:", 'like_dislike_ratio' in df.columns)
     else:
         st.write("Columns 'likes' or 'dislikes' are missing.")
-    
-    # Plot the like/dislike ratio
-    fig, ax = plt.subplots()
-    ax.hist(df['like_dislike_ratio'], bins=30, color='lightgreen', edgecolor='black')
-    ax.set_title("Like/Dislike Ratio Distribution")
-    ax.set_xlabel("Like/Dislike Ratio")
-    ax.set_ylabel("Frequency")
-    st.pyplot(fig)
+
+    # Ensure the 'like_dislike_ratio' column is created before plotting
+    if 'like_dislike_ratio' in df.columns:
+        fig, ax = plt.subplots()
+        ax.hist(df['like_dislike_ratio'], bins=30, color='lightgreen', edgecolor='black')
+        ax.set_title("Like/Dislike Ratio Distribution")
+        ax.set_xlabel("Like/Dislike Ratio")
+        ax.set_ylabel("Frequency")
+        st.pyplot(fig)
+    else:
+        st.write("Unable to create 'like_dislike_ratio' column.")
 
     # Viral vs Non-Viral Video Distribution
     st.subheader("📊 Viral vs Non-Viral Video Distribution")

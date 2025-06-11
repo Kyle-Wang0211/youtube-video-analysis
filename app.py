@@ -147,9 +147,13 @@ elif section == "03 Dataset Visualization":
     # Like/Dislike Ratio
     st.subheader("👍👎 Like/Dislike Ratio")
     
-    # Calculate the like/dislike ratio, adding 1 to avoid division by zero
-    df['like_dislike_ratio'] = df['likes'] / (df['dislikes'] + 1)
-
+    # Check if 'likes' and 'dislikes' columns exist
+    if 'likes' in df.columns and 'dislikes' in df.columns:
+        df['like_dislike_ratio'] = df['likes'] / (df['dislikes'] + 1)  # Avoid division by zero
+    else:
+        st.write("Columns 'likes' or 'dislikes' are missing.")
+    
+    # Plot the like/dislike ratio
     fig, ax = plt.subplots()
     ax.hist(df['like_dislike_ratio'], bins=30, color='lightgreen', edgecolor='black')
     ax.set_title("Like/Dislike Ratio Distribution")

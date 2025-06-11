@@ -129,17 +129,18 @@ elif section == "02 Business Case & Data Presentation":
         ratio = df["is_viral"].value_counts(normalize=True)
         st.bar_chart(ratio)
 
-elif section == "03 Data Visualization":
+elif section == "03 Dataset Visualization":
     st.title("📊 Data Visualization")
     st.markdown("""
-    In this section, we will explore the dataset visually to uncover trends and patterns that can provide valuable insights into YouTube video performance. The following visualizations focus on:
-    - Video views distribution
-    - Like/dislike ratio and comments count
-    - Viral vs non-viral video distribution
-    - Correlations between key features
+    In this section, we will explore the dataset visually to uncover trends and patterns that can provide valuable insights into YouTube video performance.
     """)
 
-    # Video Views Distribution
+    # Data Cleaning (ensure numeric conversion and handle missing data)
+    df['likes'] = pd.to_numeric(df['likes'], errors='coerce').fillna(0)
+    df['dislikes'] = pd.to_numeric(df['dislikes'], errors='coerce').fillna(0)
+    df['views'] = pd.to_numeric(df['views'], errors='coerce').fillna(0)
+
+    # Distribution of Video Views
     st.subheader("📊 Distribution of Video Views")
     fig, ax = plt.subplots()
     ax.hist(df['views'], bins=30, color='skyblue', edgecolor='black')
@@ -150,7 +151,7 @@ elif section == "03 Data Visualization":
 
     # Like/Dislike Ratio
     st.subheader("👍👎 Like/Dislike Ratio")
-    df['like_dislike_ratio'] = df['likes'] / (df['dislikes'] + 1)
+    df['like_dislike_ratio'] = df['likes'] / (df['dislikes'] + 1)  # Avoid division by zero
     fig, ax = plt.subplots()
     ax.hist(df['like_dislike_ratio'], bins=30, color='lightgreen', edgecolor='black')
     ax.set_title("Like/Dislike Ratio Distribution")
@@ -158,7 +159,7 @@ elif section == "03 Data Visualization":
     ax.set_ylabel("Frequency")
     st.pyplot(fig)
 
-    # Viral vs Non-Viral
+    # Viral vs Non-Viral Video Distribution
     st.subheader("📊 Viral vs Non-Viral Video Distribution")
     viral_ratio = df['is_viral'].value_counts(normalize=True)
     st.write(f"Viral vs Non-Viral video ratio: {viral_ratio.to_dict()}")
@@ -178,6 +179,7 @@ elif section == "03 Data Visualization":
     sns.boxplot(x='is_viral', y='views', data=df, ax=ax)
     ax.set_title("Comparison of Views: Viral vs Non-Viral Videos")
     st.pyplot(fig)
+
 
 
 elif section == "04 Prediction":

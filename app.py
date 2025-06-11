@@ -164,29 +164,6 @@ elif section == "03 Dataset Visualization":
     top_filtered = filtered_df.nlargest(10, 'views')
     st.dataframe(top_filtered[['title', 'views']])
 
-    # Like/Dislike Ratio
-    st.subheader("👍👎 Like/Dislike Ratio")
-    
-    # Check if 'likes' and 'dislikes' columns exist before calculating the ratio
-    if 'likes' in df.columns and 'dislike_count' in df.columns:
-        # Create the 'like_dislike_ratio' column
-        df['like_dislike_ratio'] = df['likes'] / (df['dislike_count'] + 1)  # Avoid division by zero
-        # Debugging step: check if the 'like_dislike_ratio' column is created
-        st.write("Like/Dislike Ratio Column Created:", 'like_dislike_ratio' in df.columns)
-    else:
-        st.write("Columns 'likes' or 'dislike_count' are missing.")
-    
-    # Ensure the 'like_dislike_ratio' column is created before plotting
-    if 'like_dislike_ratio' in df.columns:
-        fig, ax = plt.subplots()
-        ax.hist(df['like_dislike_ratio'], bins=30, color='lightgreen', edgecolor='black')
-        ax.set_title("Like/Dislike Ratio Distribution")
-        ax.set_xlabel("Like/Dislike Ratio")
-        ax.set_ylabel("Frequency")
-        st.pyplot(fig)
-    else:
-        st.write("Unable to create 'like_dislike_ratio' column.")
-
     # Viral vs Non-Viral Video Distribution
     st.subheader("📊 Viral vs Non-Viral Video Distribution")
     viral_ratio = df['is_viral'].value_counts(normalize=True)
@@ -204,15 +181,19 @@ elif section == "03 Dataset Visualization":
     sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f', ax=ax)
     ax.set_title("Correlation Matrix of Features")
     st.pyplot(fig)
-
-    # Feature Comparison for Viral vs Non-Viral Videos
-    st.subheader("📊 Feature Comparison: Viral vs Non-Viral Videos")
+    st.write("
+    - High Correlation:
+             - Views and Likes: The correlation of 0.88 between views and likes indicates a strong positive correlation, meaning that videos with more views tend to have more likes.
+             - Views and Comment Count: A correlation of 0.80 suggests that videos with more views also tend to receive more comments, which makes sense as more popular videos are likely to get more engagement.
+                ")
+             
+    #Viral vs Non-Viral Videos
+    st.subheader("🆚 Comparison: Viral vs Non-Viral Videos")
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.boxplot(x='is_viral', y='views', data=df, ax=ax)
     ax.set_title("Comparison of Views: Viral vs Non-Viral Videos")
     st.pyplot(fig)
-
-
+    
 
 elif section == "04 Prediction":
     st.markdown("## 🔮 04 Prediction")

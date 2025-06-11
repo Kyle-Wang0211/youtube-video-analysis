@@ -211,15 +211,6 @@ elif section == "03 Dataset Visualization":
     views_per_month = df.groupby('publish_month')['views'].sum()
     likes_per_month = df.groupby('publish_month')['likes'].sum()
     
-    # Plot Views per Month
-    st.subheader("📊 Views Per Month")
-    fig, ax = plt.subplots(figsize=(10, 6))
-    views_per_month.plot(kind='bar', ax=ax, color='purple')
-    ax.set_title("Views Per Month")
-    ax.set_xlabel("Month")
-    ax.set_ylabel("Total Views")
-    st.pyplot(fig)
-    
     # Plot Likes per Month
     st.subheader("📊 Likes Per Month")
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -229,12 +220,8 @@ elif section == "03 Dataset Visualization":
     ax.set_ylabel("Total Likes")
     st.pyplot(fig)
 
-    # Filter out any rows where views are greater than a specified threshold (e.g., 1 billion views)
     df_filtered = df[df['views'] <= 1e9]
-    
-    # Recalculate views per month after filtering out extreme values
     views_per_month_filtered = df_filtered.groupby('publish_month')['views'].sum()
-    
     # Plot the filtered data
     st.subheader("📊 Views Per Month (Filtered)")
     fig, ax = plt.subplots(figsize=(10, 6))

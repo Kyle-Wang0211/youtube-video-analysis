@@ -2,16 +2,18 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import numpy as np
+
+st.set_page_config(
+    page_title="📊 YouTube Video Analysis APP",
+    layout="wide"
+)
 
 @st.cache_data
 def load_data():
     return pd.read_csv("processed_youtube.csv")
 df = load_data()
 
-st.set_page_config(
-    page_title="📊 YouTube Video Analysis APP",
-    layout="wide"
-)
 
 # 在侧边栏放置导航菜单
 with st.sidebar:
@@ -235,55 +237,67 @@ elif section == "03 Dataset Visualization":
 
 
 elif section == "04 Prediction":
-    st.markdown("## 🔮 04 Prediction")
-    st.write("This section enables user input and prediction display.")
+    st.title("🔮 YouTube Video Views Prediction")
 
-    # Load and preprocess data
-    df = pd.read_csv("processed_youtube.csv")
-    df = df.dropna(subset=['views', 'likes', 'comment_count'])
+     # Let user choose evaluation metrics
+    selected_metrics = st.multiselect(
+        "📊 Select Evaluation Metrics",
+        ["Mean Squared Error (MSE)", "Mean Absolute Error (MAE)", "R² Score"],
+        default=["R² Score", "Mean Absolute Error (MAE)"]
+    )
 
-    df['publish_time'] = pd.to_datetime(df['publish_time'], errors='coerce')
-    df['publish_month'] = df['publish_time'].dt.month
+    df2 = pd.read_csv("processed_youtube.csv")
+    df2 = df2.dropna()
+    df2['publish_time'] = pd.to_datetime(df2['publish_time'], errors='coerce')
+    df2['publish_month'] = df2['publish_time'].dt.month
 
-    # Select features and target
     features = ['likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_month']
-    X = df[features]
-    y = df['views']
+    X = df2[features]
+    y = df2['views']
 
-    # Train/test split
-    from sklearn.linear_model import LinearRegression
     from sklearn.model_selection import train_test_split
-    from sklearn.metrics import r2_score, mean_absolute_error
-
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # Train model
+    # Defining Model
+    from sklearn.linear_model import LinearRegression
     model = LinearRegression()
     model.fit(X_train, y_train)
 
-    # Evaluate model
-    y_pred = model.predict(X_test)
-    r2 = r2_score(y_test, y_pred)
-    mae = mean_absolute_error(y_test, y_pred)
+    predictions = model.predict(X_test)
+
+    #Evauation
+    from sklearn import metrics
+    if "Mean Squared Error (MSE)" in selected_metrics:
+         mse = metrics.mean_squared_error(y_test, predictions)
+         st.write(f"- **MSE** {mse:,.2f}")
+    if "Mean Absolute Error (MAE)" in selected_metrics:
+        mae = metrics.mean_absolute_error(y_test, predictions)
+        st.write(f"- **MAE** {mae:,.2f}")
+    if "R² Score" in selected_metrics:
+        r2 = metrics.r2_score(y_test, predictions)
+        st.write(f"- **R2** {r2:,.3f}")
 
     st.markdown(f"**Model R² Score:** `{r2:.3f}`")
     st.markdown(f"**Mean Absolute Error (MAE):** `{mae:,.0f}` views")
 
-    # User inputs
-    st.header("🎯 Predict Views for a New Video")
+    st.header("📈 Predict Views for a New Video")
     likes = st.number_input("👍 Number of Likes", 0, 1_000_000, 50000)
     comments = st.number_input("💬 Number of Comments", 0, 500_000, 10000)
-    title_length = st.slider("📝 Title Length (characters)", 5, 100, 40)
-    tag_count = st.slider("🏷️ Number of Tags", 0, 30, 10)
-    publish_hour = st.slider("🕐 Publish Hour (24h)", 0, 23, 17)
+    title_length = st.slider("📝 Title Length", 5, 100, 40)
+    tag_count = st.slider("🏷️ Tag Count", 0, 30, 10)
+    publish_hour = st.slider("🕐 Publish Hour", 0, 23, 17)
     publish_month = st.selectbox("📅 Publish Month", list(range(1, 13)))
 
-    # Prediction
-    import numpy as np
     input_data = np.array([[likes, comments, title_length, tag_count, publish_hour, publish_month]])
     predicted_views = model.predict(input_data)[0]
 
     st.success(f"📺 **Predicted Views:** `{int(predicted_views):,}`")
+
+
+
+elif section == "05 Business Prospects":
+    st.markdown("## 📈 05 Business Prospects")
+    st.write("This section discusses the implications of model output.")
 
 
 

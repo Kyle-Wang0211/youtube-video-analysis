@@ -109,13 +109,14 @@ elif section == "02 Dataset Visualization":
     
     # Load dataset
     df = load_data()  # Use the defined function to load the data
-
+    st.write(df.head())
+    
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Dataset Overview")
         st.markdown(f"- **Number of Videos:** {df.shape[0]}")
         st.markdown(f"- **Number of Columns:** {df.shape[1]}")
-        st.markdown("**Columns:**  " + ", ".join(df.columns.tolist()))
+        st.markdown("**Columns:**  " + ", ".join(list(df.columns)))
         
     with col2:
         st.subheader("Sample Data")

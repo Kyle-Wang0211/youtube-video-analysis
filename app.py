@@ -182,7 +182,7 @@ elif section == "03 Dataset Visualization":
     ax.set_title("Correlation Matrix of Features")
     st.pyplot(fig)
     st.write("""
-    ##High Correlation:
+    High Correlation:
     - Views and Likes: The correlation of 0.88 between views and likes indicates a strong positive correlation, meaning that videos with more views tend to have more likes.
     - Views and Comment Count: A correlation of 0.80 suggests that videos with more views also tend to receive more comments, which makes sense as more popular videos are likely to get more engagement.
     """)
@@ -193,6 +193,19 @@ elif section == "03 Dataset Visualization":
     sns.boxplot(x='is_viral', y='views', data=df, ax=ax)
     ax.set_title("Comparison of Views: Viral vs Non-Viral Videos")
     st.pyplot(fig)
+
+    # Convert publish_time to datetime (if necessary)
+    df['publish_time'] = pd.to_datetime(df['publish_time'], errors='coerce')
+    
+    # Check for missing values in publish_time
+    st.write(f"Missing publish_time values: {df['publish_time'].isnull().sum()}")
+    
+    # Extract year and month
+    df['publish_year'] = df['publish_time'].dt.year
+    df['publish_month'] = df['publish_time'].dt.month
+    
+    # Verify the new columns
+    st.write(df[['publish_time', 'publish_year', 'publish_month']].head())
     
 
 elif section == "04 Prediction":

@@ -97,7 +97,7 @@ elif section == "02 Dataset Visualization":
     - **Marketing Teams**: Optimize ad targeting and campaign strategies.
     - **Data Science Teams**: Analyze data to create more accurate predictive models.  
     
-    **核心问题**  
+    **Core Questions**  
     - What factors influence video performance and trending status?
     - How can we predict whether a video will go viral?
     - Can we provide actionable insights based on available data to optimize content strategies?

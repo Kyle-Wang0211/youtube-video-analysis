@@ -154,6 +154,7 @@ elif section == "03 Dataset Visualization":
     ax.set_ylabel("Video Title")
     st.pyplot(fig)
 
+    # Likes vs. Views Scatter Plot
     st.subheader("🔴 Likes vs. Views")
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.scatterplot(x='views', y='likes', data=df, color='b', alpha=0.6)
@@ -162,23 +163,7 @@ elif section == "03 Dataset Visualization":
     ax.set_ylabel("Likes")
     st.pyplot(fig)
 
-    # Assuming there's a 'category' column
-    st.subheader("📊 Views Distribution by Video Category")
-    category_views = df.groupby('category')['views'].sum().sort_values(ascending=False).head(10)
-    fig, ax = plt.subplots(figsize=(10, 6))
-    category_views.plot(kind='bar', color='lightcoral', ax=ax)
-    ax.set_title("Top Categories by Views")
-    ax.set_xlabel("Category")
-    ax.set_ylabel("Total Views")
-    st.pyplot(fig)
-
-    # Category-wise Engagement Heatmap
-    category_engagement = df.groupby('category')[['views', 'likes', 'dislikes', 'comment_count']].sum()
-    fig, ax = plt.subplots(figsize=(12, 8))
-    sns.heatmap(category_engagement.corr(), annot=True, cmap='coolwarm', fmt='.2f', ax=ax)
-    ax.set_title("Category-wise Engagement Correlation Heatmap")
-    st.pyplot(fig)
-
+    # Filter by Views
     st.subheader("🔧 Filter by Views")
     min_views = st.slider("Min Views", 0, int(df['views'].max()), 1000000)
     filtered_df = df[df['views'] >= min_views]
@@ -192,13 +177,13 @@ elif section == "03 Dataset Visualization":
     st.subheader("👍👎 Like/Dislike Ratio")
     
     # Check if 'likes' and 'dislikes' columns exist before calculating the ratio
-    if 'likes' in df.columns and 'dislikes' in df.columns:
+    if 'likes' in df.columns and 'dislike_count' in df.columns:
         # Create the 'like_dislike_ratio' column
-        df['like_dislike_ratio'] = df['likes'] / (df['dislikes'] + 1)  # Avoid division by zero
+        df['like_dislike_ratio'] = df['likes'] / (df['dislike_count'] + 1)  # Avoid division by zero
         # Debugging step: check if the 'like_dislike_ratio' column is created
         st.write("Like/Dislike Ratio Column Created:", 'like_dislike_ratio' in df.columns)
     else:
-        st.write("Columns 'likes' or 'dislikes' are missing.")
+        st.write("Columns 'likes' or 'dislike_count' are missing.")
     
     # Ensure the 'like_dislike_ratio' column is created before plotting
     if 'like_dislike_ratio' in df.columns:

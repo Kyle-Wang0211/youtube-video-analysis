@@ -143,6 +143,50 @@ elif section == "03 Dataset Visualization":
     ax.set_xlabel("Number of Views")
     ax.set_ylabel("Frequency")
     st.pyplot(fig)
+    
+    # Top 10 Trending Videos by Views
+    st.subheader("📊 Top 10 Trending Videos by Views")
+    top_trending = df.nlargest(10, 'views')
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.barplot(x='views', y='title', data=top_trending, ax=ax, palette="viridis")
+    ax.set_title("Top 10 Trending Videos by Views")
+    ax.set_xlabel("Views")
+    ax.set_ylabel("Video Title")
+    st.pyplot(fig)
+
+    st.subheader("🔴 Likes vs. Views")
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.scatterplot(x='views', y='likes', data=df, color='b', alpha=0.6)
+    ax.set_title("Likes vs. Views")
+    ax.set_xlabel("Views")
+    ax.set_ylabel("Likes")
+    st.pyplot(fig)
+
+    # Assuming there's a 'category' column
+    st.subheader("📊 Views Distribution by Video Category")
+    category_views = df.groupby('category')['views'].sum().sort_values(ascending=False).head(10)
+    fig, ax = plt.subplots(figsize=(10, 6))
+    category_views.plot(kind='bar', color='lightcoral', ax=ax)
+    ax.set_title("Top Categories by Views")
+    ax.set_xlabel("Category")
+    ax.set_ylabel("Total Views")
+    st.pyplot(fig)
+
+    # Category-wise Engagement Heatmap
+    category_engagement = df.groupby('category')[['views', 'likes', 'dislikes', 'comment_count']].sum()
+    fig, ax = plt.subplots(figsize=(12, 8))
+    sns.heatmap(category_engagement.corr(), annot=True, cmap='coolwarm', fmt='.2f', ax=ax)
+    ax.set_title("Category-wise Engagement Correlation Heatmap")
+    st.pyplot(fig)
+
+    st.subheader("🔧 Filter by Views")
+    min_views = st.slider("Min Views", 0, int(df['views'].max()), 1000000)
+    filtered_df = df[df['views'] >= min_views]
+    st.write(f"Showing videos with at least {min_views} views.")
+    
+    # Show top 10 filtered videos by views
+    top_filtered = filtered_df.nlargest(10, 'views')
+    st.dataframe(top_filtered[['title', 'views']])
 
     # Like/Dislike Ratio
     st.subheader("👍👎 Like/Dislike Ratio")

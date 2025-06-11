@@ -149,6 +149,11 @@ elif section == "03 Dataset Visualization":
     ax.set_ylabel("Frequency")
     st.pyplot(fig)
 
+    if 'likes' in df.columns and 'dislikes' in df.columns:
+        df['like_dislike_ratio'] = df['likes'] / (df['dislikes'] + 1)
+    else:
+        st.write("Columns 'likes' or 'dislikes' are missing.")
+
     # Like/Dislike Ratio
     st.subheader("👍👎 Like/Dislike Ratio")
     df['like_dislike_ratio'] = df['likes'] / (df['dislikes'] + 1)  # Avoid division by zero

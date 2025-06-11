@@ -83,23 +83,25 @@ elif section == "02 Dataset Visualization":
     st.title("💼 Business Case & Data Presentation")
     st.markdown("""
     **Background**  
-    - 描述公司/产品背景、行业现状  
-    - 目标受众、市场机会  
+    - YouTube is a dominant platform for video content, with billions of active users daily. The ability to predict which videos will trend can help creators and marketers optimize content strategy, audience engagement, and advertising revenue.
+    - The app is designed to help stakeholders understand trends, predict viral content, and guide business decisions based on data insights.  
     
     **Objectives**  
-    1. 提升视频内容的用户留存率  
-    2. 增加广告收入与用户付费转化  
-    3. 优化内容推荐模型，提升推荐精准度  
+    1. **Increase User Retention**: Help content creators and marketers optimize their videos to increase user engagement and retention.
+    2. **Boost Revenue**: Provide insights into which types of videos are more likely to generate revenue through ads or subscriptions.
+    3. **Enhance Recommendation Models**: Use trending data to improve video recommendations, making them more personalized and relevant to users.
+  
     
     **Key Stakeholders**  
-    - 产品团队  
-    - 市场/运营团队  
-    - 数据科学团队  
+    - **Product Teams**: Develop better video recommendation algorithms.
+    - **Marketing Teams**: Optimize ad targeting and campaign strategies.
+    - **Data Science Teams**: Analyze data to create more accurate predictive models.  
     
     **核心问题**  
-    - 哪些因素能够驱动视频观看量？  
-    - 如何预测一条视频是否会成为“viral”？  
-    - 我们能否基于现有数据给出可操作的增长建议？
+    - What factors influence video performance and trending status?
+    - How can we predict whether a video will go viral?
+    - Can we provide actionable insights based on available data to optimize content strategies?
+
     """)
     
     st.markdown("---")

@@ -154,15 +154,6 @@ elif section == "03 Dataset Visualization":
     ax.set_ylabel("Video Title")
     st.pyplot(fig)
 
-    # Likes vs. Views Scatter Plot
-    st.subheader("🔴 Likes vs. Views")
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.scatterplot(x='views', y='likes', data=df, color='b', alpha=0.6)
-    ax.set_title("Likes vs. Views")
-    ax.set_xlabel("Views")
-    ax.set_ylabel("Likes")
-    st.pyplot(fig)
-
     # Filter by Views
     st.subheader("🔧 Filter by Views")
     min_views = st.slider("Min Views", 0, int(df['views'].max()), 1000000)

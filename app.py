@@ -185,6 +185,7 @@ elif section == "03 Dataset Visualization":
     High Correlation:
     - Views and Likes: The correlation of 0.88 between views and likes indicates a strong positive correlation, meaning that videos with more views tend to have more likes.
     - Views and Comment Count: A correlation of 0.80 suggests that videos with more views also tend to receive more comments, which makes sense as more popular videos are likely to get more engagement.
+    
     """)
         
     #Viral vs Non-Viral Videos
@@ -206,7 +207,28 @@ elif section == "03 Dataset Visualization":
     
     # Verify the new columns
     st.write(df[['publish_time', 'publish_year', 'publish_month']].head())
+    # Trends Over Months (Month-wise views or likes)
+    views_per_month = df.groupby('publish_month')['views'].sum()
+    likes_per_month = df.groupby('publish_month')['likes'].sum()
     
+    # Plot Views per Month
+    st.subheader("📊 Views Per Month")
+    fig, ax = plt.subplots(figsize=(10, 6))
+    views_per_month.plot(kind='bar', ax=ax, color='purple')
+    ax.set_title("Views Per Month")
+    ax.set_xlabel("Month")
+    ax.set_ylabel("Total Views")
+    st.pyplot(fig)
+    
+    # Plot Likes per Month
+    st.subheader("📊 Likes Per Month")
+    fig, ax = plt.subplots(figsize=(10, 6))
+    likes_per_month.plot(kind='bar', ax=ax, color='orange')
+    ax.set_title("Likes Per Month")
+    ax.set_xlabel("Month")
+    ax.set_ylabel("Total Likes")
+    st.pyplot(fig)
+
 
 elif section == "04 Prediction":
     st.markdown("## 🔮 04 Prediction")

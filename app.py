@@ -135,11 +135,6 @@ elif section == "03 Dataset Visualization":
     In this section, we will explore the dataset visually to uncover trends and patterns that can provide valuable insights into YouTube video performance.
     """)
 
-    # Data Cleaning (ensure numeric conversion and handle missing data)
-    df['likes'] = pd.to_numeric(df['likes'], errors='coerce').fillna(0)
-    df['dislikes'] = pd.to_numeric(df['dislikes'], errors='coerce').fillna(0)
-    df['views'] = pd.to_numeric(df['views'], errors='coerce').fillna(0)
-
     # Distribution of Video Views
     st.subheader("📊 Distribution of Video Views")
     fig, ax = plt.subplots()
@@ -149,14 +144,12 @@ elif section == "03 Dataset Visualization":
     ax.set_ylabel("Frequency")
     st.pyplot(fig)
 
-    if 'likes' in df.columns and 'dislikes' in df.columns:
-        df['like_dislike_ratio'] = df['likes'] / (df['dislikes'] + 1)
-    else:
-        st.write("Columns 'likes' or 'dislikes' are missing.")
-
     # Like/Dislike Ratio
     st.subheader("👍👎 Like/Dislike Ratio")
-    df['like_dislike_ratio'] = df['likes'] / (df['dislikes'] + 1)  # Avoid division by zero
+    
+    # Calculate the like/dislike ratio, adding 1 to avoid division by zero
+    df['like_dislike_ratio'] = df['likes'] / (df['dislikes'] + 1)
+
     fig, ax = plt.subplots()
     ax.hist(df['like_dislike_ratio'], bins=30, color='lightgreen', edgecolor='black')
     ax.set_title("Like/Dislike Ratio Distribution")

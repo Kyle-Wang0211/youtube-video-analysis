@@ -53,7 +53,7 @@ if section == "Home":
     
     st.markdown("""
     - **Kyle Wang**  
-      Project leader and full-stack developer. Designed system architecture and implemented model integration.
+      Developed Streamlit components and optimized UI/UX processes, established the app framework, participated in the selection of themes in the early stages of the project, and explored the future business prospects of the project.
     
     - **Josephine Wang**  
       Data visualization and user interface specialist. Built Streamlit components and optimized UI/UX flow.

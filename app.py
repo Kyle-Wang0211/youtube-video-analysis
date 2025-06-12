@@ -46,7 +46,9 @@ if section == "Home":
     """, unsafe_allow_html=True)
 
     # 主页内容
-    st.markdown("---")
+    st.markdown("----")
+
+# 📌 团队介绍
 st.markdown("### 👥 Team Introduction")
 
 st.markdown("""

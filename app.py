@@ -107,9 +107,9 @@ elif section == "02 Business Case & Data Presentation":
     - The app is designed to help stakeholders understand trends, predict viral content, and guide business decisions based on data insights.  
     
     **Objectives**  
-    1. **Increase User Retention**: Help content creators and marketers optimize their videos to increase user engagement and retention.
-    2. **Boost Revenue**: Provide insights into which types of videos are more likely to generate revenue through ads or subscriptions.
-    3. **Enhance Recommendation Models**: Use trending data to improve video recommendations, making them more personalized and relevant to users.
+    - **Increase User Retention**: Help content creators and marketers optimize their videos to increase user engagement and retention.
+    - **Boost Revenue**: Provide insights into which types of videos are more likely to generate revenue through ads or subscriptions.
+    - **Enhance Recommendation Models**: Use trending data to improve video recommendations, making them more personalized and relevant to users.
   
     
     **Key Stakeholders**  

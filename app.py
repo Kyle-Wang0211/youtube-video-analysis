@@ -37,6 +37,7 @@ st.markdown("""
 
 # 根据选择渲染不同内容
 if section == "Home":
+    st.image("assets/illustration.png", use_column_width=True)
     st.markdown("""
         <p style='text-align: center;'>
         This platform uses a linear regression model to analyze YouTube video trends and predict popularity. <br>

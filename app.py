@@ -86,17 +86,43 @@ if section == "Home":
 elif section == "01 Introduction":
     st.header("🎯 Objective")
     st.markdown("""
-    This project aims to build an interactive application that demonstrates the power of linear regression in predicting YouTube video performance using historical metrics.  
-    It simplifies technical concepts for non-technical users and supports real-world decision-making.
+    This project builds an interactive application to explore how linear regression can be used to predict YouTube video popularity based on historical metrics such as views, likes, comments, and publishing time.  
+    It simplifies technical models for non-technical users and promotes data-driven decision-making.
     """)
 
-    st.header("💡 Motivation")
+    st.header("🔍 Background")
     st.markdown("""
-    In the digital age, YouTube creators and marketers need to forecast how content will perform to optimize engagement and growth.  
-    This app:
-    - Helps users understand what makes videos popular.
-    - Provides an educational tool for learning regression-based prediction.
-    - Assists marketers in campaign planning using data insights.
+    In a digital landscape flooded with video content, understanding what drives virality has become vital for content creators, marketers, and analysts.  
+    YouTube, as the world’s largest video-sharing platform, offers a rich trove of user engagement data.  
+    While tech giants use deep learning for personalized recommendations, our project focuses on **linear regression**—a simpler and explainable model—to uncover insights from basic video features.
+    """)
+
+    st.header("🧠 Research Questions")
+    st.markdown("""
+    - What features (likes, comments, publish hour) influence a video's views?
+    - Can we estimate future popularity using historical patterns?
+    - How can data support smarter content strategy decisions?
+    """)
+
+    st.header("🛠️ Technologies Used")
+    st.markdown("""
+    - **Streamlit** for interface development  
+    - **Pandas**, **Seaborn**, and **Matplotlib** for data processing and visualization  
+    - **Scikit-learn** for training and evaluating the linear regression model
+    """)
+
+    st.header("📊 Dataset Overview")
+    st.markdown("""
+    - **Source**: YouTube Trending Video Statistics (Kaggle)  
+    - **Size**: 12,440 videos with 11 attributes  
+    - **Key Fields**: `views`, `likes`, `comment_count`, `title_length`, `tag_count`, `publish_hour`, `is_viral`
+    """)
+
+    st.header("🧑‍🏫 Use Cases")
+    st.markdown("""
+    - 🎓 Educational: Demonstrates regression modeling in an intuitive way  
+    - 📈 Marketing: Assists in upload timing and content strategy planning  
+    - 🧪 Analytical: Serves as a replicable ML pipeline for future experiments
     """)
 
 # Second section: Dataset Visualization

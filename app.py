@@ -42,7 +42,7 @@ if section == "Home":
         This platform uses a linear regression model to analyze YouTube video trends and predict popularity. <br>
         Use the dropdown menu above to explore different sections.
         </p>
-        ---
+
     """, unsafe_allow_html=True)
 
     # 主页内容

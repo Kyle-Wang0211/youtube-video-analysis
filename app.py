@@ -46,6 +46,19 @@ if section == "Home":
     """, unsafe_allow_html=True)
 
     # 主页内容
+    st.markdown("---")
+st.markdown("### 👥 Team Introduction")
+
+st.markdown("""
+- **Kyle Wang**  
+  Project leader and full-stack developer. Designed system architecture and implemented model integration.
+
+- **Josephine Wang**  
+  Data visualization and user interface specialist. Built Streamlit components and optimized UI/UX flow.
+
+- **Kevin Qian**  
+  Data analyst and machine learning engineer. Preprocessed YouTube dataset and developed linear regression models.
+""")
     st.markdown("""
     ### 🎯 Objective
     This app aims to help users understand and apply linear regression in analyzing trends and predicting the popularity of YouTube videos. It simplifies complex concepts and enables intuitive interaction with the data.

@@ -122,8 +122,36 @@ elif section == "02 Business Case & Data Presentation":
     - Can we provide actionable insights based on available data to optimize content strategies?
 
     """)
-    
     st.markdown("---")
+
+    # —— KPI Cards ——  
+    kpi1, kpi2, kpi3, kpi4 = st.columns(4)
+    kpi1.metric("📺 Total Views", f"{int(df['views'].sum()):,}")
+    kpi2.metric("👍 Avg. Likes", f"{df['likes'].mean():.0f}")
+    kpi3.metric("💬 Avg. Comments", f"{df['comment_count'].mean():.0f}")
+    kpi4.metric("🔥 Viral Rate", f"{df['is_viral'].mean()*100:.1f}%")
+
+    st.header("🔍 Data Quality & Processing")
+    st.markdown("""
+    **1. Data Cleaning**  
+    - **Deduplication:** Remove duplicate rows based on `video_id` or the combination of `title` and `channel_title`.  
+        - Remove rows if key metrics like **views**, **likes**, or **comment_count** are blank.  
+        - For other fields (e.g. **tag_count**, **title_length**), replace blanks with 0 or the column’s median.  
+        - Drop rows with bad or unreadable **publish_time** entries.  
+    - **Remove Outliers:** Use box-plot rules (IQR) to filter out extreme values in **views**, **likes**, and **comment_count**.
+
+    **2. Feature Engineering & Scaling**  
+    - **Date Features:** Extract hour and day of week from **publish_time**.  
+    - **Text Features:** Calculate title length and tag count.  
+    - **Log Scaling:** Apply `log1p` to **views**, **likes**, and **comment_count** to even out skewed data.  
+    - **Normalization:** Scale key numeric features to the same range for modeling.
+
+    **3. “is_viral” Label Definition**  
+    - Sort videos by **original** `views` in descending order and label the top 10% as `is_viral = 1`, others as 0.  
+    - **Threshold Justification:** A 10% positive rate balances representation and model training needs; adjustable to 5% or 15% based on business context.  
+    """)
+    st.markdown("---")
+    
     
     # —— 第二部分：Data Presentation ——  
     st.header("📊 Data Presentation")
@@ -154,26 +182,6 @@ elif section == "03 Dataset Visualization":
     In this section, we will explore the dataset visually to uncover trends and patterns that can provide valuable insights into YouTube video performance.
     """)
 
-    st.header("🔍 Data Quality & Processing")
-    st.markdown("""
-    **1. Data Cleaning**  
-    - **Deduplication:** Remove duplicate rows based on `video_id` or the combination of `title` and `channel_title`.  
-        - Remove rows if key metrics like **views**, **likes**, or **comment_count** are blank.  
-        - For other fields (e.g. **tag_count**, **title_length**), replace blanks with 0 or the column’s median.  
-        - Drop rows with bad or unreadable **publish_time** entries.  
-    - **Remove Outliers:** Use box-plot rules (IQR) to filter out extreme values in **views**, **likes**, and **comment_count**.
-
-    **2. Feature Engineering & Scaling**  
-    - **Date Features:** Extract hour and day of week from **publish_time**.  
-    - **Text Features:** Calculate title length and tag count.  
-    - **Log Scaling:** Apply `log1p` to **views**, **likes**, and **comment_count** to even out skewed data.  
-    - **Normalization:** Scale key numeric features to the same range for modeling.
-
-    **3. “is_viral” Label Definition**  
-    - Sort videos by **original** `views` in descending order and label the top 10% as `is_viral = 1`, others as 0.  
-    - **Threshold Justification:** A 10% positive rate balances representation and model training needs; adjustable to 5% or 15% based on business context.  
-    """)
-    
     st.markdown("---")
 
     # Distribution of Video Views

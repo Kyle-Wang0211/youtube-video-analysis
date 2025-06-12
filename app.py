@@ -80,6 +80,7 @@ if section == "Home":
         The Trending YouTube Video Statistics dataset was downloaded from kaggle.com, includes attributes such as view count, likes, comments, and video duration. These features are used to model and predict video popularity using linear regression.
     """)
 
+
 # Section 1
 elif section == "01 Introduction":
     st.header("🎯 Objective")
@@ -130,6 +131,7 @@ elif section == "02 Business Case & Data Presentation":
     kpi2.metric("👍 Avg. Likes", f"{df['likes'].mean():.0f}")
     kpi3.metric("💬 Avg. Comments", f"{df['comment_count'].mean():.0f}")
     kpi4.metric("🔥 Viral Rate", f"{df['is_viral'].mean()*100:.1f}%")
+    st.markdown("---")
 
     st.header("🔍 Data Quality & Processing")
     st.markdown("""

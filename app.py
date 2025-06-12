@@ -364,9 +364,9 @@ elif section == "03 Dataset Visualization":
     st.write(df['publish_month'].value_counts())  # Check how many entries exist for each month
     
 elif section == "04 Prediction":
-    st.title("YouTube Video Views Prediction")
+    st.title("📈 YouTube Video Views Prediction")
 
-     # Let user choose evaluation metrics
+    # Let user choose evaluation metrics
     selected_metrics = st.multiselect(
         "📊 Select Evaluation Metrics",
         ["Mean Squared Error (MSE)", "Mean Absolute Error (MAE)", "R² Score"],
@@ -385,31 +385,38 @@ elif section == "04 Prediction":
     from sklearn.model_selection import train_test_split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # Defining Model
     from sklearn.linear_model import LinearRegression
     model = LinearRegression()
     model.fit(X_train, y_train)
 
     predictions = model.predict(X_test)
 
-    #Evauation
     from sklearn import metrics
+
+    # Define default values
+    r2, mae, mse = None, None, None
+
+    # Evaluation
     if "R² Score" in selected_metrics:
-    r2 = metrics.r2_score(y_test, predictions)
-    st.write(f"- **R² Score:** {r2:.3f}")
-    
+        r2 = metrics.r2_score(y_test, predictions)
+        st.write(f"- **R² Score:** {r2:.3f}")
+
     if "Mean Absolute Error (MAE)" in selected_metrics:
-    mae = metrics.mean_absolute_error(y_test, predictions)
-    st.write(f"- **MAE:** {mae:,.2f}")
+        mae = metrics.mean_absolute_error(y_test, predictions)
+        st.write(f"- **MAE:** {mae:,.2f}")
 
     if "Mean Squared Error (MSE)" in selected_metrics:
-    mse = metrics.mean_squared_error(y_test, predictions)
-   
+        mse = metrics.mean_squared_error(y_test, predictions)
+        st.write(f"- **MSE:** {mse:,.2f}")
 
-    st.markdown(f"**Model R² Score:** `{r2:.3f}`")
-    st.markdown(f"**Mean Absolute Error (MAE):** `{mae:,.0f}` views")
+    # Safely display evaluation metrics (only if values exist)
+    if r2 is not None:
+        st.markdown(f"**Model R² Score:** `{r2:.3f}`")
+    if mae is not None:
+        st.markdown(f"**Mean Absolute Error (MAE):** `{mae:,.0f}` views")
 
-    st.header("📈 Predict Views for a New Video")
+    st.header("📊 Predict Views for a New Video")
+
     likes = st.number_input("👍 Number of Likes", 0, 1_000_000, 50000)
     comments = st.number_input("💬 Number of Comments", 0, 500_000, 10000)
     title_length = st.slider("📝 Title Length", 5, 100, 40)
@@ -417,9 +424,16 @@ elif section == "04 Prediction":
     publish_hour = st.slider("🕐 Publish Hour", 0, 23, 17)
     publish_month = st.selectbox("📅 Publish Month", list(range(1, 13)))
 
-    input_data = np.array([[likes, comments, title_length, tag_count, publish_hour, publish_month]])
-    predicted_views = model.predict(input_data)[0]
+    input_data = pd.DataFrame([{
+        'likes': likes,
+        'comment_count': comments,
+        'title_length': title_length,
+        'tag_count': tag_count,
+        'publish_hour': publish_hour,
+        'publish_month': publish_month
+    }])
 
+    predicted_views = model.predict(input_data)[0]
     st.success(f"📺 **Predicted Views:** `{int(predicted_views):,}`")
 
 

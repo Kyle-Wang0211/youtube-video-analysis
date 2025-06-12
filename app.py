@@ -442,8 +442,56 @@ elif section == "05 Business Prospects":
     st.markdown("## 📈 05 Business Prospects")
     st.write("This section discusses the implications of model output.")
 
+    st.markdown("### 💼 Target Users")
+    st.markdown("""
+    - **YouTube Creators**: Understand what content strategies drive views and engagement.  
+    - **Marketing Teams**: Predict campaign success before launch and optimize ad timing.  
+    - **Talent Management Agencies**: Use prediction tools to evaluate rising creators.  
+    - **EdTech & Data Education**: Showcase real-life machine learning use cases with explainable models.
+    """)
+
+    st.markdown("---")
+
+    st.markdown("### 🚀 Business Applications")
+    st.markdown("""
+    1. **Content Optimization Platform**  
+       Integrate this prediction model into a tool that gives creators daily suggestions on when to post, how long titles should be, or whether a video might trend based on its draft metadata.
+       
+    2. **Brand-Influencer Matching**  
+       Help brands choose creators not only based on past performance, but based on future projected performance (using our regression predictions).
+
+    3. **YouTube SEO Assistant**  
+       Recommend tag count, title length, and upload time based on historical performance to increase discoverability and engagement.
+    """)
+
+    st.markdown("---")
+
+    st.markdown("### 🧠 Future Improvements")
+    st.markdown("""
+    - **Model Enhancements**:  
+      Replace linear regression with more advanced models like random forests or XGBoost to improve accuracy.  
+
+    - **Real-Time API**:  
+      Deploy model as a web API for integration with platforms like Notion, Discord bots, or Chrome extensions for creators.  
+
+    - **Multi-language Dataset**:  
+      Expand beyond English-speaking content to support global creators and advertisers.  
+
+    - **Time-Series Forecasting**:  
+      Incorporate trends over time and viewer retention patterns to forecast not only total views but expected growth trajectory.
+    """)
+
+    st.markdown("---")
+
+    st.markdown("### 🌍 Vision")
+    st.markdown("""
+    In a creator economy that moves fast, having a **lightweight, interpretable, and interactive tool** like ours can bridge the gap between creators and data.  
+    Whether it’s a solo vlogger in Barcelona or a brand team in New York, predictive insights give **data-driven creators a competitive edge**.
+    """)
+
+    st.success("Thank you for exploring our project! We now welcome your questions.")
 
 
-elif section == "05 Business Prospects":
-    st.markdown("## 📈 05 Business Prospects")
-    st.write("This section discusses the implications of model output.")
+
+
+

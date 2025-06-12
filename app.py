@@ -394,20 +394,17 @@ elif section == "04 Prediction":
 
     #Evauation
     from sklearn import metrics
-if "R² Score" in selected_metrics:
+    if "R² Score" in selected_metrics:
     r2 = metrics.r2_score(y_test, predictions)
     st.write(f"- **R² Score:** {r2:.3f}")
-    st.markdown(f"**Model R² Score:** `{r2:.3f}`")
-
-if "Mean Absolute Error (MAE)" in selected_metrics:
+    
+    if "Mean Absolute Error (MAE)" in selected_metrics:
     mae = metrics.mean_absolute_error(y_test, predictions)
     st.write(f"- **MAE:** {mae:,.2f}")
-    st.markdown(f"**Mean Absolute Error (MAE):** `{mae:,.0f}` views")
 
-if "Mean Squared Error (MSE)" in selected_metrics:
+    if "Mean Squared Error (MSE)" in selected_metrics:
     mse = metrics.mean_squared_error(y_test, predictions)
-    st.write(f"- **MSE:** {mse:,.2f}")
-
+   
 
     st.markdown(f"**Model R² Score:** `{r2:.3f}`")
     st.markdown(f"**Mean Absolute Error (MAE):** `{mae:,.0f}` views")

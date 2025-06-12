@@ -156,17 +156,16 @@ elif section == "03 Dataset Visualization":
     st.markdown("""
     **1. Data Cleaning**  
     - **Deduplication:** Remove duplicate rows based on `video_id` or the combination of `title` and `channel_title`.  
-    - **Missing Value Handling:**  
-      - Drop samples with missing core fields (`views`, `likes`, `comment_count`).  
-      - Fill missing secondary fields (`tag_count`, `title_length`) with 0 or the median.  
-      - Mark invalid `publish_time` entries as `NaT` and drop them.  
-    - **Outlier Detection:** Use the IQR or boxplot method to remove extreme outliers in `views`, `likes`, and `comment_count`.  
+        - Remove rows if key metrics like **views**, **likes**, or **comment_count** are blank.  
+        - For other fields (e.g. **tag_count**, **title_length**), replace blanks with 0 or the column’s median.  
+        - Drop rows with bad or unreadable **publish_time** entries.  
+    - **Remove Outliers:** Use box-plot rules (IQR) to filter out extreme values in **views**, **likes**, and **comment_count**.
 
     **2. Feature Engineering & Scaling**  
-    - **Date Features:** Extract `publish_hour` and `publish_day` from `publish_time`.  
-    - **Text Features:** Derive `title_length` and `tag_count`.  
-    - **Log Scaling:** Apply `log1p` transformation to `views`, `likes`, and `comment_count` to reduce skewness.  
-    - **Normalization/Standardization:** Apply z-score or Min–Max scaling to key numerical features.  
+    - **Date Features:** Extract hour and day of week from **publish_time**.  
+    - **Text Features:** Calculate title length and tag count.  
+    - **Log Scaling:** Apply `log1p` to **views**, **likes**, and **comment_count** to even out skewed data.  
+    - **Normalization:** Scale key numeric features to the same range for modeling.
 
     **3. “is_viral” Label Definition**  
     - Sort videos by **original** `views` in descending order and label the top 10% as `is_viral = 1`, others as 0.  
@@ -176,7 +175,7 @@ elif section == "03 Dataset Visualization":
     st.markdown("---")
 
     # Distribution of Video Views
-    st.subheader("📊 Distribution of Video Views")
+    st.subheader("Distribution of Video Views")
     fig, ax = plt.subplots()
     ax.hist(df['views'], bins=30, color='skyblue', edgecolor='black')
     ax.set_title("Video Views Distribution")
@@ -185,7 +184,7 @@ elif section == "03 Dataset Visualization":
     st.pyplot(fig)
     
     # Top 10 Trending Videos by Views
-    st.subheader("📊 Top 10 Trending Videos by Views")
+    st.subheader("Top 10 Trending Videos by Views")
     top_trending = df.nlargest(10, 'views')
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.barplot(x='views', y='title', data=top_trending, ax=ax, palette="viridis")
@@ -195,7 +194,7 @@ elif section == "03 Dataset Visualization":
     st.pyplot(fig)
 
     # Filter by Views
-    st.subheader("🔧 Filter by Views")
+    st.subheader("Filter by Views")
     min_views = st.slider("Min Views", 0, int(df['views'].max()), 1000000)
     filtered_df = df[df['views'] >= min_views]
     st.write(f"Showing videos with at least {min_views} views.")
@@ -205,7 +204,7 @@ elif section == "03 Dataset Visualization":
     st.dataframe(top_filtered[['title', 'views']])
 
     # Viral vs Non-Viral Video Distribution
-    st.subheader("📊 Viral vs Non-Viral Video Distribution")
+    st.subheader("Viral vs Non-Viral Video Distribution")
     viral_ratio = df['is_viral'].value_counts(normalize=True)
     st.write(f"Viral vs Non-Viral video ratio: {viral_ratio.to_dict()}")
     st.bar_chart(viral_ratio)
@@ -216,7 +215,7 @@ elif section == "03 Dataset Visualization":
     # Compute the correlation matrix
     correlation_matrix = numeric_df.corr()
 
-    st.subheader("🔍 Correlation Between Features")
+    st.subheader("Correlation Between Features")
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f', ax=ax)
     ax.set_title("Correlation Matrix of Features")
@@ -229,7 +228,7 @@ elif section == "03 Dataset Visualization":
     """)
         
     #Viral vs Non-Viral Videos
-    st.subheader("🆚 Comparison: Viral vs Non-Viral Videos")
+    st.subheader("Comparison: Viral vs Non-Viral Videos")
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.boxplot(x='is_viral', y='views', data=df, ax=ax)
     ax.set_title("Comparison of Views: Viral vs Non-Viral Videos")
@@ -252,7 +251,7 @@ elif section == "03 Dataset Visualization":
     likes_per_month = df.groupby('publish_month')['likes'].sum()
     
     # Plot Likes per Month
-    st.subheader("📊 Likes Per Month")
+    st.subheader("Likes Per Month")
     fig, ax = plt.subplots(figsize=(10, 6))
     likes_per_month.plot(kind='bar', ax=ax, color='orange')
     ax.set_title("Likes Per Month")
@@ -263,7 +262,7 @@ elif section == "03 Dataset Visualization":
     df_filtered = df[df['views'] <= 1e9]
     views_per_month_filtered = df_filtered.groupby('publish_month')['views'].sum()
     # Plot the filtered data
-    st.subheader("📊 Views Per Month (Filtered)")
+    st.subheader("Views Per Month (Filtered)")
     fig, ax = plt.subplots(figsize=(10, 6))
     views_per_month_filtered.plot(kind='bar', ax=ax, color='purple')
     ax.set_title("Views Per Month")
@@ -272,7 +271,6 @@ elif section == "03 Dataset Visualization":
     st.pyplot(fig)
     # Check for any missing or invalid months
     st.write(df['publish_month'].value_counts())  # Check how many entries exist for each month
-
 
 elif section == "04 Prediction":
     st.title("🔮 YouTube Video Views Prediction")

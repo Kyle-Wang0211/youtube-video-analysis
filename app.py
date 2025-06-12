@@ -48,37 +48,37 @@ if section == "Home":
     # 主页内容
     st.markdown("----")
 
-# 📌 团队介绍
-st.markdown("### 👥 Team Introduction")
+    # 📌 团队介绍
+    st.markdown("### 👥 Team Introduction")
+    
+    st.markdown("""
+    - **Kyle Wang**  
+      Project leader and full-stack developer. Designed system architecture and implemented model integration.
+    
+    - **Josephine Wang**  
+      Data visualization and user interface specialist. Built Streamlit components and optimized UI/UX flow.
+    
+    - **Kevin Qian**  
+      Data analyst and machine learning engineer. Preprocessed YouTube dataset and developed linear regression models.
+    """)
 
-st.markdown("""
-- **Kyle Wang**  
-  Project leader and full-stack developer. Designed system architecture and implemented model integration.
-
-- **Josephine Wang**  
-  Data visualization and user interface specialist. Built Streamlit components and optimized UI/UX flow.
-
-- **Kevin Qian**  
-  Data analyst and machine learning engineer. Preprocessed YouTube dataset and developed linear regression models.
-""")
-
-st.markdown("""
-    ### 🎯 Objective
-    This app aims to help users understand and apply linear regression in analyzing trends and predicting the popularity of YouTube videos. It simplifies complex concepts and enables intuitive interaction with the data.
-
-    ### 💡 Motivation
-    - YouTube content creators, marketers, and analysts need effective tools to anticipate video performance.
-    - By predicting future popularity using historical metrics, stakeholders can make informed decisions on content planning, advertising, and engagement.
-    - Our app demonstrates the power of machine learning to support real-world decisions.
-
-    ### 🛠️ Technologies Used
-    - **Python** & **Streamlit** for building the interface
-    - **Pandas**, **Seaborn**, and **Matplotlib** for data processing and visualization
-    - **Scikit-learn** for building and evaluating the linear regression model
-
-    ### 🧪 Dataset
-    The Trending YouTube Video Statistics dataset was downloaded from kaggle.com, includes attributes such as view count, likes, comments, and video duration. These features are used to model and predict video popularity using linear regression.
-""")
+    st.markdown("""
+        ### 🎯 Objective
+        This app aims to help users understand and apply linear regression in analyzing trends and predicting the popularity of YouTube videos. It simplifies complex concepts and enables intuitive interaction with the data.
+    
+        ### 💡 Motivation
+        - YouTube content creators, marketers, and analysts need effective tools to anticipate video performance.
+        - By predicting future popularity using historical metrics, stakeholders can make informed decisions on content planning, advertising, and engagement.
+        - Our app demonstrates the power of machine learning to support real-world decisions.
+    
+        ### 🛠️ Technologies Used
+        - **Python** & **Streamlit** for building the interface
+        - **Pandas**, **Seaborn**, and **Matplotlib** for data processing and visualization
+        - **Scikit-learn** for building and evaluating the linear regression model
+    
+        ### 🧪 Dataset
+        The Trending YouTube Video Statistics dataset was downloaded from kaggle.com, includes attributes such as view count, likes, comments, and video duration. These features are used to model and predict video popularity using linear regression.
+    """)
 
 # Section 1
 elif section == "01 Introduction":

@@ -61,7 +61,8 @@ st.markdown("""
 - **Kevin Qian**  
   Data analyst and machine learning engineer. Preprocessed YouTube dataset and developed linear regression models.
 """)
-    st.markdown("""
+
+st.markdown("""
     ### 🎯 Objective
     This app aims to help users understand and apply linear regression in analyzing trends and predicting the popularity of YouTube videos. It simplifies complex concepts and enables intuitive interaction with the data.
 
@@ -77,7 +78,7 @@ st.markdown("""
 
     ### 🧪 Dataset
     The Trending YouTube Video Statistics dataset was downloaded from kaggle.com, includes attributes such as view count, likes, comments, and video duration. These features are used to model and predict video popularity using linear regression.
-    """)
+""")
 
 elif section == "01 Introduction":
     st.header("🎯 Objective")

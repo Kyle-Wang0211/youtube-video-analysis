@@ -61,7 +61,7 @@ if section == "Home":
     - **Scikit-learn** for building and evaluating the linear regression model
 
     ### 🧪 Dataset
-    The dataset includes attributes such as view count, likes, comments, and video duration. These features are used to model and predict video popularity using linear regression.
+    The Trending YouTube Video Statistics dataset was downloaded from kaggle.com, includes attributes such as view count, likes, comments, and video duration. These features are used to model and predict video popularity using linear regression.
     """)
 
 elif section == "01 Introduction":
@@ -136,6 +136,29 @@ elif section == "03 Dataset Visualization":
     st.markdown("""
     In this section, we will explore the dataset visually to uncover trends and patterns that can provide valuable insights into YouTube video performance.
     """)
+
+    st.header("🔍 Data Quality & Processing")
+    st.markdown("""
+    **1. Data Cleaning**  
+    - **Deduplication:** Remove duplicate rows based on `video_id` or the combination of `title` and `channel_title`.  
+    - **Missing Value Handling:**  
+      - Drop samples with missing core fields (`views`, `likes`, `comment_count`).  
+      - Fill missing secondary fields (`tag_count`, `title_length`) with 0 or the median.  
+      - Mark invalid `publish_time` entries as `NaT` and drop them.  
+    - **Outlier Detection:** Use the IQR or boxplot method to remove extreme outliers in `views`, `likes`, and `comment_count`.  
+
+    **2. Feature Engineering & Scaling**  
+    - **Date Features:** Extract `publish_hour` and `publish_day` from `publish_time`.  
+    - **Text Features:** Derive `title_length` and `tag_count`.  
+    - **Log Scaling:** Apply `log1p` transformation to `views`, `likes`, and `comment_count` to reduce skewness.  
+    - **Normalization/Standardization:** Apply z-score or Min–Max scaling to key numerical features.  
+
+    **3. “is_viral” Label Definition**  
+    - Sort videos by **original** `views` in descending order and label the top 10% as `is_viral = 1`, others as 0.  
+    - **Threshold Justification:** A 10% positive rate balances representation and model training needs; adjustable to 5% or 15% based on business context.  
+    """)
+    
+    st.markdown("---")
 
     # Distribution of Video Views
     st.subheader("📊 Distribution of Video Views")

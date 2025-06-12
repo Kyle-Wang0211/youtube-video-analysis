@@ -178,6 +178,64 @@ elif section == "02 Business Case & Data Presentation":
         ratio = df["is_viral"].value_counts(normalize=True)
         st.bar_chart(ratio)
 
+        # —— 交互式业务假设验证 ——  
+    st.sidebar.header("🧪 Business Hypothesis Filter")
+    # 时间段筛选
+    time_slot = st.sidebar.multiselect(
+        "Publish Time Slot",
+        ["Morning", "Afternoon", "Evening"],
+        default=["Morning", "Afternoon", "Evening"]
+    )
+    # 标签数量范围
+    tag_min, tag_max = st.sidebar.slider(
+        "Tag Count Range",
+        int(df["tag_count"].min()),
+        int(df["tag_count"].max()),
+        (0, int(df["tag_count"].max()))
+    )
+
+    # 根据筛选条件过滤 df
+    def slot(h):
+        if h < 12:   return "Morning"
+        if h < 18:   return "Afternoon"
+        return "Evening"
+
+    df["time_slot"] = df["publish_hour"].apply(slot)
+    df_filtered = df[
+        df["time_slot"].isin(time_slot) &
+        df["tag_count"].between(tag_min, tag_max)
+    ]
+
+    # —— Top Channels 排名 ——  
+    st.subheader("🏆 Top 5 Channels by Total Views")
+    ch_stats = (
+        df_filtered
+        .groupby("channel_title")["views"]
+        .agg(total_views="sum", avg_views="mean")
+        .sort_values("total_views", ascending=False)
+        .head(5)
+    )
+    # 总播放量柱状图
+    st.bar_chart(ch_stats["total_views"])
+    # 排名表格
+    st.table(ch_stats.style.format({"total_views":"{:,}","avg_views":"{:.0f}"}))
+
+    # —— Viral 视频案例剖析 ——  
+    st.subheader("🎬 Viral Video Case Study")
+    top_viral = df_filtered[df_filtered["is_viral"]==1].nlargest(2, "views")
+    for _, row in top_viral.iterrows():
+        st.markdown(f"**{row['title']}**  |  Published: {row['publish_time']}")
+        st.write({
+            "Views": f"{row['views']:,}",
+            "Likes": row["likes"],
+            "Comments": row["comment_count"],
+            "Tags": row["tag_count"]
+        })
+        # 如果你有播放量随时间的序列数据，可以在这里画折线：
+        # st.line_chart(your_time_series_df[row['video_id']])
+        st.markdown("---")
+
+
 elif section == "03 Dataset Visualization":
     st.title("📊 Data Visualization")
     st.markdown("""

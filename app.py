@@ -80,7 +80,7 @@ st.markdown("""
     The Trending YouTube Video Statistics dataset was downloaded from kaggle.com, includes attributes such as view count, likes, comments, and video duration. These features are used to model and predict video popularity using linear regression.
 """)
 
-elif section == "01 Introduction":
+if section == "01 Introduction":
     st.header("🎯 Objective")
     st.markdown("""
     This project aims to build an interactive application that demonstrates the power of linear regression in predicting YouTube video performance using historical metrics.  
@@ -272,9 +272,8 @@ elif section == "03 Dataset Visualization":
     st.pyplot(fig)
     # Check for any missing or invalid months
     st.write(df['publish_month'].value_counts())  # Check how many entries exist for each month
-
 elif section == "04 Prediction":
-    st.title("🔮 YouTube Video Views Prediction")
+    st.title("YouTube Video Views Prediction")
 
      # Let user choose evaluation metrics
     selected_metrics = st.multiselect(

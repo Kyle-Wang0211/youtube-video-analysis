@@ -37,7 +37,7 @@ st.markdown("""
 
 # 根据选择渲染不同内容
 if section == "Home":
-    st.image("assets/illustration.png", use_column_width=True)
+    st.image("assets/illustration.png",use_container_width=True)
   
 
     # 主页内容
@@ -80,8 +80,8 @@ if section == "Home":
 elif section == "01 Introduction":
     st.header("🎯 Objective")
     st.markdown("""
-    This project builds an interactive application to explore how linear regression can be used to predict YouTube video popularity based on historical metrics such as views, likes, comments, and publishing time.  
-    It simplifies technical models for non-technical users and promotes data-driven decision-making.
+    This project builds an interactive web application that uses linear regression to predict the number of views a YouTube video might receive, based on pre-publication features such as likes (early likes), comments, title length, tag count, and upload time.
+    Our goal is to provide a transparent, educational, and practical tool for exploring what factors may contribute to video popularity on YouTube.
     """)
 
     st.header("🔍 Background")

@@ -53,8 +53,8 @@ if section == "Home":
     - **Josephine Wang**  
       Data visualization and user interface specialist. Built Streamlit components and optimized UI/UX flow.
     
-    - **Kevin Qian**  
-      Data analyst and machine learning engineer. Preprocessed YouTube dataset and developed linear regression models.
+    - **Yusheng Qian**  
+      Handled data preprocessing, feature engineering, and model development. Built and evaluated the linear regression model that predicts video views based on upload-time features such as title length, tag count, and publish time.
     """)
 
     st.markdown("""

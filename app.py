@@ -332,18 +332,14 @@ elif section == "03 Dataset Visualization":
     df['publish_year'] = df['publish_time'].dt.year
     df['publish_month'] = df['publish_time'].dt.month
     
-    # Verify the new columns
-    st.write(df[['publish_time', 'publish_year', 'publish_month']].head())
-    # Trends Over Months (Month-wise views or likes)
-    views_per_month = df.groupby('publish_month')['views'].sum()
-    likes_per_month = df.groupby('publish_month')['likes'].sum()
     
-    st.subheader("Likes Per Month (Filtered)")
-
+    # Group and filter Likes Per Month
     monthly_likes = df.groupby('publish_month')['likes'].sum().reset_index()
     threshold = 10000
     filtered_likes = monthly_likes[monthly_likes['likes'] > threshold]
     
+    # Plot Likes Per Month (Filtered)
+    st.subheader("Likes Per Month (Filtered)")
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.bar(filtered_likes['publish_month'], filtered_likes['likes'], color='orange')
     ax.set_title("Likes Per Month (Filtered)")
@@ -351,9 +347,29 @@ elif section == "03 Dataset Visualization":
     ax.set_ylabel("Total Likes")
     st.pyplot(fig)
     
+    # Add Explanation Note
     st.markdown("""
     > ℹ️ **Note**: Only months with total likes greater than 10,000 are shown.  
     """)
+    
+    # Group and filter Views Per Month
+    monthly_views = df.groupby('publish_month')['views'].sum().reset_index()
+    filtered_views = monthly_views[monthly_views['views'] > 1000000]  # 你也可以调整这个 threshold
+    
+    # Plot Views Per Month (Filtered)
+    st.subheader("Views Per Month (Filtered)")
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.bar(filtered_views['publish_month'], filtered_views['views'], color='purple')
+    ax.set_title("Views Per Month (Filtered)")
+    ax.set_xlabel("Month")
+    ax.set_ylabel("Total Views")
+    st.pyplot(fig)
+    
+    # Add Explanation Note
+    st.markdown("""
+    > ℹ️ **Note**: Only months with total views greater than 1,000,000 are shown.  
+    """)
+
 
 
 

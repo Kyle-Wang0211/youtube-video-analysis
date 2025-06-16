@@ -347,19 +347,22 @@ elif section == "03 Dataset Visualization":
     ax.set_ylabel("Total Likes")
     st.pyplot(fig)
 
-    df_filtered = df[df['views'] <= 1e9]
-    views_per_month_filtered = df_filtered.groupby('publish_month')['views'].sum()
-    # Plot the filtered data
-    st.subheader("Views Per Month (Filtered)")
-    fig, ax = plt.subplots(figsize=(10, 6))
-    views_per_month_filtered.plot(kind='bar', ax=ax, color='purple')
-    ax.set_title("Views Per Month")
-    ax.set_xlabel("Month")
-    ax.set_ylabel("Total Views")
-    st.pyplot(fig)
-    # Check for any missing or invalid months
-    st.write(df['publish_month'].value_counts())  # Check how many entries exist for each month
+    fig, ax = plt.subplots()
+    monthly_views = df.groupby('publish_month')['views'].sum().reset_index()
     
+    ax.bar(monthly_views['publish_month'], monthly_views['views'], color='purple')
+    
+    # 对数 y 轴
+    ax.set_yscale("log")
+    
+    ax.set_title("Views Per Month (Log Scale)")
+    ax.set_xlabel("Month")
+    ax.set_ylabel("Total Views (log)")
+    
+    st.pyplot(fig)
+
+
+
 elif section == "04 Prediction":
     st.title("📈 YouTube Video Views Prediction")
 

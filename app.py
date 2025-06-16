@@ -353,13 +353,20 @@ elif section == "03 Dataset Visualization":
     ax.bar(monthly_views['publish_month'], monthly_views['views'], color='purple')
     
     # 对数 y 轴
+   monthly_likes = df.groupby('publish_month')['likes'].sum().reset_index()
+
+    fig, ax = plt.subplots()
+    ax.bar(monthly_likes['publish_month'], monthly_likes['likes'], color='orange')
+    
+    # 核心：Y 轴对数
     ax.set_yscale("log")
     
-    ax.set_title("Views Per Month (Log Scale)")
+    ax.set_title("Likes Per Month (Log Scale)")
     ax.set_xlabel("Month")
-    ax.set_ylabel("Total Views (log)")
+    ax.set_ylabel("Total Likes (log)")
     
     st.pyplot(fig)
+
 
 
 

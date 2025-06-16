@@ -338,9 +338,8 @@ elif section == "03 Dataset Visualization":
     views_per_month = df.groupby('publish_month')['views'].sum()
     likes_per_month = df.groupby('publish_month')['likes'].sum()
     
-    # Likes per Month (filtered)
     st.subheader("Likes Per Month (Filtered)")
-    
+
     monthly_likes = df.groupby('publish_month')['likes'].sum().reset_index()
     threshold = 10000
     filtered_likes = monthly_likes[monthly_likes['likes'] > threshold]
@@ -355,8 +354,6 @@ elif section == "03 Dataset Visualization":
     st.markdown("""
     > ℹ️ **Note**: Only months with total likes greater than 10,000 are shown.  
     """)
-
-
 
 
 

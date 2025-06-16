@@ -265,15 +265,16 @@ elif section == "03 Dataset Visualization":
 
     st.markdown("---")
 
+    filtered_df = df[df['views'] <= 5e6]  # 过滤到500万以下
     fig, ax = plt.subplots()
-    ax.hist(df['views'], bins=100, color='skyblue', edgecolor='black')  # 增加 bins 数量
-    ax.set_xlim(0, 5e6)
+    ax.hist(filtered_df['views'], bins=100, color='skyblue', edgecolor='black')
     ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f'{int(x/1e6)}M'))
     
-    ax.set_title("Video Views Distribution (0–5M, More Detail)")
+    ax.set_title("Video Views Distribution (Only Views ≤ 5M)")
     ax.set_xlabel("Number of Views")
     ax.set_ylabel("Frequency")
     st.pyplot(fig)
+
 
     
     # Top 10 Trending Videos by Views

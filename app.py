@@ -265,15 +265,16 @@ elif section == "03 Dataset Visualization":
 
     st.markdown("---")
 
-    # Distribution of Video Views
+   # Distribution of Video Views
     st.subheader("Distribution of Video Views")
     fig, ax = plt.subplots()
     ax.hist(df['views'], bins=30, color='skyblue', edgecolor='black')
-    ax.set_xlim(0, 4e7)
+    ax.set_xlim(0, 4e7)  # 设置x轴范围为0到4000万
     ax.set_title("Video Views Distribution")
     ax.set_xlabel("Number of Views")
     ax.set_ylabel("Frequency")
     st.pyplot(fig)
+
     
     # Top 10 Trending Videos by Views
     st.subheader("Top 10 Trending Videos by Views")

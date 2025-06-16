@@ -265,6 +265,7 @@ elif section == "03 Dataset Visualization":
 
     st.markdown("---")
 
+    import matplotlib.ticker as ticker
     filtered_df = df[df['views'] <= 5e6]  # 过滤到500万以下
     fig, ax = plt.subplots()
     ax.hist(filtered_df['views'], bins=100, color='skyblue', edgecolor='black')

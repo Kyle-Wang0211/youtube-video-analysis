@@ -338,34 +338,24 @@ elif section == "03 Dataset Visualization":
     views_per_month = df.groupby('publish_month')['views'].sum()
     likes_per_month = df.groupby('publish_month')['likes'].sum()
     
-    # Plot Likes per Month
-    st.subheader("Likes Per Month")
+    # Likes per Month (filtered)
+    st.subheader("Likes Per Month (Filtered)")
+    
+    monthly_likes = df.groupby('publish_month')['likes'].sum().reset_index()
+    threshold = 10000
+    filtered_likes = monthly_likes[monthly_likes['likes'] > threshold]
+    
     fig, ax = plt.subplots(figsize=(10, 6))
-    likes_per_month.plot(kind='bar', ax=ax, color='orange')
-    ax.set_title("Likes Per Month")
+    ax.bar(filtered_likes['publish_month'], filtered_likes['likes'], color='orange')
+    ax.set_title("Likes Per Month (Filtered)")
     ax.set_xlabel("Month")
     ax.set_ylabel("Total Likes")
     st.pyplot(fig)
+    
+    st.markdown("""
+    > ℹ️ **Note**: Only months with total likes greater than 10,000 are shown.  
+    """)
 
-    fig, ax = plt.subplots()
-    monthly_views = df.groupby('publish_month')['views'].sum().reset_index()
-    
-    ax.bar(monthly_views['publish_month'], monthly_views['views'], color='purple')
-    
-    # 对数 y 轴
-   monthly_likes = df.groupby('publish_month')['likes'].sum().reset_index()
-
-    fig, ax = plt.subplots()
-    ax.bar(monthly_likes['publish_month'], monthly_likes['likes'], color='orange')
-    
-    # 核心：Y 轴对数
-    ax.set_yscale("log")
-    
-    ax.set_title("Likes Per Month (Log Scale)")
-    ax.set_xlabel("Month")
-    ax.set_ylabel("Total Likes (log)")
-    
-    st.pyplot(fig)
 
 
 

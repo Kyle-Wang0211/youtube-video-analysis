@@ -269,6 +269,7 @@ elif section == "03 Dataset Visualization":
     st.subheader("Distribution of Video Views")
     fig, ax = plt.subplots()
     ax.hist(df['views'], bins=30, color='skyblue', edgecolor='black')
+    ax.set_xlim(0, 4e7)
     ax.set_title("Video Views Distribution")
     ax.set_xlabel("Number of Views")
     ax.set_ylabel("Frequency")
@@ -317,13 +318,6 @@ elif section == "03 Dataset Visualization":
     - Views and Comment Count: A correlation of 0.80 suggests that videos with more views also tend to receive more comments, which makes sense as more popular videos are likely to get more engagement.
     
     """)
-        
-    #Viral vs Non-Viral Videos
-    st.subheader("Comparison: Viral vs Non-Viral Videos")
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.boxplot(x='is_viral', y='views', data=df, ax=ax)
-    ax.set_title("Comparison of Views: Viral vs Non-Viral Videos")
-    st.pyplot(fig)
 
     # Convert publish_time to datetime (if necessary)
     df['publish_time'] = pd.to_datetime(df['publish_time'], errors='coerce')

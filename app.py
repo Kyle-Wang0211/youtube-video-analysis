@@ -1,8 +1,14 @@
 import streamlit as st
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+from xgboost import XGBRegressor
+import mlflow
+import mlflow.sklearn
 
 st.set_page_config(
     page_title="📊 YouTube Video Analysis APP",
@@ -376,79 +382,95 @@ elif section == "03 Dataset Visualization":
 elif section == "04 Prediction":
     st.title("📈 YouTube Video Views Prediction")
 
-    # Let user choose evaluation metrics
-    selected_metrics = st.multiselect(
-        "📊 Select Evaluation Metrics",
-        ["Mean Squared Error (MSE)", "Mean Absolute Error (MAE)", "R² Score"],
-        default=["R² Score", "Mean Absolute Error (MAE)"]
-    )
-
-    df2 = pd.read_csv("processed_youtube.csv")
-    df2 = df2.dropna()
-    df2['publish_time'] = pd.to_datetime(df2['publish_time'], errors='coerce')
-    df2['publish_month'] = df2['publish_time'].dt.month
-
     features = ['likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_month']
-    X = df2[features]
-    y = df2['views']
-
-    from sklearn.model_selection import train_test_split
+    X = df[features]
+    y = df['views']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    from sklearn.linear_model import LinearRegression
-    model = LinearRegression()
-    model.fit(X_train, y_train)
+    model_choice = st.selectbox("Choose a model", ["Linear Regression", "XGBoost"])
 
+    if model_choice == "Linear Regression":
+        model = LinearRegression()
+    else:
+        model = XGBRegressor(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
+
+    model.fit(X_train, y_train)
     predictions = model.predict(X_test)
 
-    from sklearn import metrics
+    r2 = metrics.r2_score(y_test, predictions)
+    mae = metrics.mean_absolute_error(y_test, predictions)
 
-    # Define default values
-    r2, mae, mse = None, None, None
+    st.metric("R²", f"{r2:.3f}")
+    st.metric("MAE", f"{mae:,.0f} views")
 
-    # Evaluation
-    if "R² Score" in selected_metrics:
-        r2 = metrics.r2_score(y_test, predictions)
-        st.write(f"- **R² Score:** {r2:.3f}")
-
-    if "Mean Absolute Error (MAE)" in selected_metrics:
-        mae = metrics.mean_absolute_error(y_test, predictions)
-        st.write(f"- **MAE:** {mae:,.2f}")
-
-    if "Mean Squared Error (MSE)" in selected_metrics:
-        mse = metrics.mean_squared_error(y_test, predictions)
-        st.write(f"- **MSE:** {mse:,.2f}")
-
-    # Safely display evaluation metrics (only if values exist)
-    if r2 is not None:
-        st.markdown(f"**Model R² Score:** `{r2:.3f}`")
-    if mae is not None:
-        st.markdown(f"**Mean Absolute Error (MAE):** `{mae:,.0f}` views")
-
-    st.header("📊 Predict Views for a New Video")
-
-    likes = st.number_input("👍 Number of Likes", 0, 1_000_000, 50000)
-    comments = st.number_input("💬 Number of Comments", 0, 500_000, 10000)
+    st.header("🔮 Predict Your Own Video")
+    likes = st.number_input("👍 Likes", 0, 1000000, 50000)
+    comments = st.number_input("💬 Comments", 0, 500000, 10000)
     title_length = st.slider("📝 Title Length", 5, 100, 40)
     tag_count = st.slider("🏷️ Tag Count", 0, 30, 10)
     publish_hour = st.slider("🕐 Publish Hour", 0, 23, 17)
     publish_month = st.selectbox("📅 Publish Month", list(range(1, 13)))
 
-    input_data = pd.DataFrame([{
-        'likes': likes,
-        'comment_count': comments,
-        'title_length': title_length,
-        'tag_count': tag_count,
-        'publish_hour': publish_hour,
-        'publish_month': publish_month
+    input_df = pd.DataFrame([{
+        'likes': likes, 'comment_count': comments, 'title_length': title_length,
+        'tag_count': tag_count, 'publish_hour': publish_hour, 'publish_month': publish_month
     }])
 
-    predicted_views = model.predict(input_data)[0]
-    st.success(f"📺 **Predicted Views:** `{int(predicted_views):,}`")
+    prediction = model.predict(input_df)[0]
+    st.success(f"📺 Predicted Views: {int(prediction):,}")
 
 
+elif section == "05 Hyperparameter Tuning":
+    st.title("🔧 Hyperparameter Tuning with MLflow & Dagshub")
 
-elif section == "05 Business Prospects":
+    mlflow.set_tracking_uri("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction.mlflow")
+    mlflow.set_experiment("xgb_hyperparam_tuning")
+
+    params_grid = {
+        'n_estimators': [100, 150],
+        'max_depth': [3, 5],
+        'learning_rate': [0.05, 0.1]
+    }
+
+    with mlflow.start_run():
+        xgb = XGBRegressor(random_state=42)
+        grid = GridSearchCV(xgb, params_grid, cv=3, scoring='r2')
+        grid.fit(X_train, y_train)
+
+        best_model = grid.best_estimator_
+        y_pred = best_model.predict(X_test)
+        r2 = metrics.r2_score(y_test, y_pred)
+        mae = metrics.mean_absolute_error(y_test, y_pred)
+
+        mlflow.log_params(grid.best_params_)
+        mlflow.log_metric("r2", r2)
+        mlflow.log_metric("mae", mae)
+
+        st.success("Tuning Complete ✅")
+        st.write(f"Best Parameters: {grid.best_params_}")
+        st.metric("R² Score", f"{r2:.3f}")
+        st.metric("MAE", f"{mae:,.0f} views")
+
+elif section == "06 Feature Importance":
+    st.title("📊 SHAP Feature Importance")
+
+    rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
+    rf_model.fit(X_train, y_train)
+    explainer = shap.TreeExplainer(rf_model)
+    shap_values = explainer.shap_values(X_train)
+
+    fig = plt.figure()
+    shap.summary_plot(shap_values, X_train, plot_type="bar", show=False)
+    st.pyplot(fig)
+
+    st.markdown("""
+    🔍 **Insights:**
+    - SHAP values explain how each feature influences the model's predictions.
+    - Useful for transparency in ML models.
+    """)
+
+    
+elif section == "07 Business Prospects":
     st.markdown("## 📈 05 Business Prospects")
     st.write("This section discusses the implications of model output.")
 

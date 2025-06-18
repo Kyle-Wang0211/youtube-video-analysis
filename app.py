@@ -446,48 +446,8 @@ elif section == "04 Prediction":
     predicted_views = model.predict(input_data)[0]
     st.success(f"📺 **Predicted Views:** {int(predicted_views):,}")
 
-
-elif section == "05 Feature Importance":
-    import shap
-from sklearn.ensemble import RandomForestRegressor
-
-# 标题
-st.subheader("📊 Feature Importance with SHAP")
-
-# 准备数据
-df_shap = df.dropna(subset=['views', 'likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_time'])
-df_shap['publish_month'] = pd.to_datetime(df_shap['publish_time'], errors='coerce').dt.month
-features = ['likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_month']
-X = df_shap[features]
-y = df_shap['views']
-
-# 拆分训练集与测试集
-from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# 训练 Random Forest 模型
-rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
-rf_model.fit(X_train, y_train)
-
-# 使用 SHAP 解释模型
-explainer = shap.TreeExplainer(rf_model)
-shap_values = explainer.shap_values(X_train)
-
-# 绘图（静态图）
-fig = plt.figure()
-shap.summary_plot(shap_values, X_train, plot_type="bar", show=False)
-st.pyplot(fig)
-
-# 简要说明
-st.markdown("""
-🔍 The SHAP summary plot above shows the average impact of each feature on the prediction.  
-- **Publish Hour** and **Tag Count** are top contributors to view predictions.
-- SHAP helps understand the model decisions, promoting trust and transparency.
-""")
-
-
     
-elif section == "06 Business Prospects":
+elif section == "05 Business Prospects":
     st.markdown("## 📈 05 Business Prospects")
     st.write("This section discusses the implications of model output.")
 

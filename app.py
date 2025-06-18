@@ -3,10 +3,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
-from xgboost import XGBRegressor
+import from sklearn.model_selection import train_test_split
+import from sklearn.linear_model import LinearRegression
+import from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+import from xgboost import XGBRegressor
 import mlflow
 import mlflow.sklearn
 

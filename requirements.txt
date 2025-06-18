@@ -1,8 +1,10 @@
-mlflow
-scikit-learn
-xgboost
-pandas
+streamlit
+pandas==2.3.0
+numpy<=2.2.0    
 matplotlib
 seaborn
-shap
-streamlit
+scikit-learn
+shap==0.48.0
+xgboost
+mlflow
+dagshub

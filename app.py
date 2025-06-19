@@ -460,7 +460,7 @@ elif section == "04 Prediction":
     predicted_views = model.predict(input_data)[0]
     st.success(f"📺 **Predicted Views ({model_choice}):** `{int(predicted_views):,}`")
 
-elif section == "05 Feature Importance & Driving Variables":
+elif section == "06 Feature Importance & Driving Variables":
     st.title("🔍 Feature Importance & Driving Variables")
 
     st.markdown("""
@@ -472,33 +472,44 @@ elif section == "05 Feature Importance & Driving Variables":
     from xgboost import XGBRegressor
     from sklearn.model_selection import train_test_split
 
-    df2 = df.dropna()
-    df2['publish_month'] = pd.to_datetime(df2['publish_time'], errors='coerce').dt.month
+    df_shap = df.dropna(subset=['views', 'likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_time'])
+    df_shap['publish_month'] = pd.to_datetime(df_shap['publish_time'], errors='coerce').dt.month
+
+    # Select features and target
     features = ['likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_month']
-    X = df2[features]
-    y = df2['views']
+    X = df_shap[features]
+    y = df_shap['views']
 
-    model = XGBRegressor(n_estimators=100, max_depth=4, random_state=42)
-    model.fit(X, y)
+    # Split data
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    explainer = shap.Explainer(model, X)
-    shap_values = explainer(X)
+    # Train XGBoost model
+    xgb_model = XGBRegressor(n_estimators=100, learning_rate=0.1, random_state=42)
+    xgb_model.fit(X_train, y_train)
 
-    st.subheader("🔍 SHAP Summary Plot")
-    fig1, ax1 = plt.subplots(figsize=(10, 5))
-    shap.plots.beeswarm(shap_values, ax=ax1, show=False)
-    st.pyplot(fig1)
+    # Explain predictions using SHAP
+    explainer = shap.Explainer(xgb_model)
+    shap_values = explainer(X_train)
 
-    st.subheader("📊 Feature Importance Bar Plot")
-    fig2, ax2 = plt.subplots(figsize=(10, 5))
-    shap.plots.bar(shap_values, ax=ax2, show=False)
-    st.pyplot(fig2)
+    # Plot summary
+    st.subheader("📊 SHAP Summary Plot (Top Features)")
+    fig_summary, ax_summary = plt.subplots(figsize=(10, 5))
+    shap.plots.beeswarm(shap_values, max_display=6, ax=ax_summary, show=False)
+    st.pyplot(fig_summary)
 
-    st.subheader("💧 SHAP Waterfall Plot (Single Prediction)")
-    sample_index = st.slider("Choose sample index", 0, len(X) - 1, 0)
-    fig3, ax3 = plt.subplots(figsize=(10, 6))
+    # Plot bar
+    st.subheader("📈 SHAP Feature Importance (Bar)")
+    fig_bar, ax_bar = plt.subplots(figsize=(10, 5))
+    shap.plots.bar(shap_values, max_display=6, ax=ax_bar, show=False)
+    st.pyplot(fig_bar)
+
+    # Plot waterfall
+    st.subheader("💧 SHAP Waterfall Plot (Single Sample)")
+    sample_index = st.slider("Select a sample index", 0, len(X_train) - 1, 0)
+    fig_waterfall, ax_waterfall = plt.subplots(figsize=(10, 6))
     shap.plots.waterfall(shap_values[sample_index], max_display=6, show=False)
-    st.pyplot(fig3)
+    st.pyplot(fig_waterfall)
+
     # Interpretation
     st.markdown("""
     ### 🔑 Key Takeaways

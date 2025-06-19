@@ -497,9 +497,10 @@ elif section == "05 Feature Importance & Driving Variables":
 
     # Scatter plot for a specific feature
     st.subheader("🔍 SHAP Scatter Plot (Likes vs SHAP Value)")
-    fig_scatter, ax = plt.subplots(figsize=(8, 5))
-    shap.plots.scatter(shap_values[:, "likes"], color=shap_values, ax=ax, show=False)
+    fig_scatter = plt.figure(figsize=(8, 5))
+    shap.plots.scatter(shap_values[:, "likes"], color=shap_values, show=False)
     st.pyplot(fig_scatter)
+    plt.clf()
 
     # Bar plot
     st.subheader("📈 SHAP Feature Importance (Bar)")
@@ -516,6 +517,8 @@ elif section == "05 Feature Importance & Driving Variables":
     shap.plots.waterfall(shap_values[0], show=False)
     # 渲染到 Streamlit
     st.pyplot(fig_waterfall)
+    plt.clf()
+
 
     # Interpretation
     st.markdown("""

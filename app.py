@@ -535,7 +535,7 @@ elif section == "06 Hyperparameter Tuning":
         st.write(f"MLflow logged MSE: {mse:.2f}")
     
 elif section == "07 Business Prospects":
-    st.markdown("## 📈 05 Business Prospects")
+    st.markdown("## 📈 07 Business Prospects")
     st.write("This section discusses the implications of model output.")
 
     st.markdown("### 💼 Target Users")

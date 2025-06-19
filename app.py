@@ -36,7 +36,7 @@ with st.sidebar:
             "04 Prediction",
             "05 Feature Importance",
             "06 Hyperparameter Tuning",
-            "07 BUsiness Prospect"
+            "07 Business Prospect"
         ]
     )
 

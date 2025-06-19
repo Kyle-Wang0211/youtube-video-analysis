@@ -541,8 +541,20 @@ elif section == "05 Feature Importance & Driving Variables":
 
 elif section == "06 Hyperparameter Tuning":
     st.title("🔧 MLflow + DAGsHub Hyperparameter Tuning")
+
+    os.environ["MLFLOW_TRACKING_USERNAME"] = "Yusheng-Qian"
+    os.environ["MLFLOW_TRACKING_PASSWORD"] = "fc89fc3a53e2948f33bd036fba14b61528360901"
+    mlflow.set_tracking_uri("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction.mlflow")
+    mlflow.set_experiment("youtube_xgb_tuning")
     
-    # 🔁 Prepare data again
+   # 拟合的超参数（当前仅做一次简单训练）
+    params = {
+        "n_estimators": 100,
+        "max_depth": 4,
+        "learning_rate": 0.1,
+    }
+
+    # 数据准备
     df2 = df.dropna()
     df2['publish_month'] = pd.to_datetime(df2['publish_time'], errors='coerce').dt.month
     features = ['likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_month']
@@ -550,27 +562,18 @@ elif section == "06 Hyperparameter Tuning":
     y = df2['views']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    os.environ["MLFLOW_TRACKING_USERNAME"] = "Yusheng-Qian"
-    os.environ["MLFLOW_TRACKING_PASSWORD"] = "fc89fc3a53e2948f33bd036fba14b61528360901"
-    mlflow.set_tracking_uri("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction.mlflow")
-    mlflow.set_experiment("youtube_xgb_tuning")
+    # 训练并记录到 MLflow
+    with mlflow.start_run():
+        mlflow.log_params(params)
+        model = XGBRegressor(**params)
+        model.fit(X_train, y_train)
+        preds = model.predict(X_test)
 
-    best_mse = float("inf")
-    best_depth = None
+        mse = mean_squared_error(y_test, preds)
+        rmse = mean_squared_error(y_test, preds, squared=False)
 
-    for depth in [3, 5, 7]:
-        with mlflow.start_run():
-            params = {"n_estimators": 100, "max_depth": depth, "learning_rate": 0.1}
-            mlflow.log_params(params)
-            model = XGBRegressor(**params)
-            model.fit(X_train, y_train)
-            preds = model.predict(X_test)
-            mse = mean_squared_error(y_test, preds)
-            mlflow.log_metric("mse", mse)
-            if mse < best_mse:
-                best_mse = mse
-                best_depth = depth
-                mlflow.sklearn.log_model(model, "best_model")
+        mlflow.log_metric("mse", mse)
+        mlflow.log_metric("rmse", rmse)
 
     st.markdown(f"**MLflow logged Best MSE:** `{best_mse:,.2f}`")
     st.markdown(f"**🔧 Best max_depth:** `{best_depth}`")

@@ -460,7 +460,7 @@ elif section == "04 Prediction":
     predicted_views = model.predict(input_data)[0]
     st.success(f"📺 **Predicted Views ({model_choice}):** `{int(predicted_views):,}`")
 
-elif section == "06 Feature Importance & Driving Variables":
+elif section == "05 Feature Importance & Driving Variables":
     st.title("🔍 Feature Importance & Driving Variables")
 
     st.markdown("""

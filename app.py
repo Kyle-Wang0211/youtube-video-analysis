@@ -542,18 +542,6 @@ elif section == "05 Feature Importance & Driving Variables":
 elif section == "06 Hyperparameter Tuning":
     st.title("🔧 MLflow + DAGsHub Hyperparameter Tuning")
 
-    os.environ["MLFLOW_TRACKING_USERNAME"] = "Yusheng-Qian"
-    os.environ["MLFLOW_TRACKING_PASSWORD"] = "fc89fc3a53e2948f33bd036fba14b61528360901"
-    mlflow.set_tracking_uri("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction.mlflow")
-    mlflow.set_experiment("youtube_xgb_tuning")
-    
-   # 拟合的超参数（当前仅做一次简单训练）
-    params = {
-        "n_estimators": 100,
-        "max_depth": 4,
-        "learning_rate": 0.1,
-    }
-
     # 数据准备
     df2 = df.dropna()
     df2['publish_month'] = pd.to_datetime(df2['publish_time'], errors='coerce').dt.month
@@ -562,29 +550,29 @@ elif section == "06 Hyperparameter Tuning":
     y = df2['views']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # 训练并记录到 MLflow
+    os.environ["MLFLOW_TRACKING_USERNAME"] = "Yusheng-Qian"
+    os.environ["MLFLOW_TRACKING_PASSWORD"] = "fc89fc3a53e2948f33bd036fba14b61528360901"
+    mlflow.set_tracking_uri("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction.mlflow")
+    mlflow.set_experiment("youtube_xgb_tuning")
+
+        params = {
+        "n_estimators": 100,
+        "max_depth": 4,
+        "learning_rate": 0.1,
+    }
+
     with mlflow.start_run():
-        for max_depth in [3, 4, 5]:
-            for learning_rate in [0.05, 0.1]:
-                params = {
-                    "n_estimators": 100,
-                    "max_depth": max_depth,
-                    "learning_rate": learning_rate
-                }
-                model = XGBRegressor(**params)
-                model.fit(X_train, y_train)
-                preds = model.predict(X_test)
+        mlflow.log_params(params)
+        model = XGBRegressor(**params)
+        model.fit(X_train, y_train)
+        preds = model.predict(X_test)
+        mse = mean_squared_error(y_test, preds)
+        mlflow.log_metric("mse", mse)
+        st.write(f"📉 MLflow logged MSE: {mse:,.2f}")
 
-                mse = mean_squared_error(y_test, preds)
-                rmse = np.sqrt(mse)
-
-                mlflow.log_params(params)
-                mlflow.log_metric("mse", mse)
-                mlflow.log_metric("rmse", rmse)
-
-    st.markdown(f"### Parameters: max_depth={max_depth}, learning_rate={learning_rate}")
-    st.markdown(f"- **MSE:** `{mse:,.2f}`")
-    st.markdown(f"- **RMSE:** `{rmse:,.0f}` views")
+        # Add RMSE display
+        rmse = np.sqrt(mse)
+        st.write(f"📏 RMSE: {rmse:,.0f} views")
 
     st.markdown("""
     ### ✅ Experiment Tracking Summary

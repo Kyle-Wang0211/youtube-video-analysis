@@ -515,7 +515,6 @@ elif section == "05 Feature Importance & Driving Variables":
 
 elif section == "06 Hyperparameter Tuning":
     st.title("🔧 MLflow + DAGsHub Hyperparameter Tuning")
-    DAGsHubLogger.set_dagshub_url("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction")
     mlflow.set_tracking_uri("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction.mlflow")
     mlflow.set_experiment("youtube_xgb_tuning")
 

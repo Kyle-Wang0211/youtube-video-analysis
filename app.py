@@ -460,6 +460,8 @@ elif section == "04 Prediction":
     predicted_views = model.predict(input_data)[0]
     st.success(f"📺 **Predicted Views ({model_choice}):** `{int(predicted_views):,}`")
 
+
+
 elif section == "05 Feature Importance & Driving Variables":
     st.title("🔍 Feature Importance & Driving Variables")
 
@@ -468,46 +470,41 @@ elif section == "05 Feature Importance & Driving Variables":
     """)
 
     import shap
-    import xgboost
     from xgboost import XGBRegressor
     from sklearn.model_selection import train_test_split
+    import matplotlib.pyplot as plt
 
     df_shap = df.dropna(subset=['views', 'likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_time'])
     df_shap['publish_month'] = pd.to_datetime(df_shap['publish_time'], errors='coerce').dt.month
 
-    # Select features and target
     features = ['likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_month']
     X = df_shap[features]
     y = df_shap['views']
 
-    # Split data
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # Train XGBoost model
     xgb_model = XGBRegressor(n_estimators=100, learning_rate=0.1, random_state=42)
     xgb_model.fit(X_train, y_train)
 
-    # Explain predictions using SHAP
     explainer = shap.Explainer(xgb_model)
     shap_values = explainer(X_train)
 
-    # Plot summary
-    st.subheader("📊 SHAP Summary Plot (Top Features)")
+    # Beeswarm plot
+    st.subheader("📊 SHAP Summary Plot (Beeswarm)")
     fig_beeswarm = plt.figure(figsize=(10, 4))
-    shap.plots.beeswarm(shap_values[:, :6], show=False)  # 限制展示前6个变量
-    st.pyplot(fig_summary)
+    shap.plots.beeswarm(shap_values[:, :6], show=False)
+    st.pyplot(fig_beeswarm)
 
-    # Plot bar
+    # Bar plot
     st.subheader("📈 SHAP Feature Importance (Bar)")
     fig_bar = plt.figure(figsize=(8, 4))
     shap.plots.bar(shap_values[:, :6], show=False)
     st.pyplot(fig_bar)
 
-    # Plot waterfall
-    st.subheader("💧 SHAP Waterfall Plot (Single Sample)")
-    sample_index = st.slider("Select a sample index", 0, len(X_train) - 1, 0)
+    # Waterfall plot for first sample
+    st.subheader("🌊 SHAP Waterfall Plot (Example)")
     fig_waterfall = plt.figure(figsize=(9, 6))
-    shap.plots.waterfall(shap_values[sample_index], max_display=6, show=False)
+    shap.plots.waterfall(shap_values[0], show=False)
     st.pyplot(fig_waterfall)
 
     # Interpretation
@@ -520,8 +517,10 @@ elif section == "05 Feature Importance & Driving Variables":
 
     These insights can guide content creators to refine their strategy and schedule for better performance.
     """)
-
     st.success("These insights make the machine learning model explainable and trustworthy.")
+
+
+
 
 elif section == "06 Hyperparameter Tuning":
     st.title("🔧 MLflow + DAGsHub Hyperparameter Tuning")

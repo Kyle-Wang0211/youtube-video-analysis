@@ -555,7 +555,7 @@ elif section == "06 Hyperparameter Tuning":
     mlflow.set_tracking_uri("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction.mlflow")
     mlflow.set_experiment("youtube_xgb_tuning")
 
-        params = {
+    params = {
         "n_estimators": 100,
         "max_depth": 4,
         "learning_rate": 0.1,

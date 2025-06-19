@@ -376,13 +376,17 @@ elif section == "03 Dataset Visualization":
 elif section == "04 Prediction":
     st.title("📈 YouTube Video Views Prediction")
 
-    # Let user choose evaluation metrics
+    # 用户选择模型
+    model_choice = st.selectbox("🧠 Choose Model", ["Linear Regression", "XGBoost Regressor"])
+
+    # 用户选择评价指标
     selected_metrics = st.multiselect(
         "📊 Select Evaluation Metrics",
         ["Mean Squared Error (MSE)", "Mean Absolute Error (MAE)", "R² Score"],
         default=["R² Score", "Mean Absolute Error (MAE)"]
     )
 
+    # 数据加载与处理
     df2 = pd.read_csv("processed_youtube.csv")
     df2 = df2.dropna()
     df2['publish_time'] = pd.to_datetime(df2['publish_time'], errors='coerce')
@@ -395,38 +399,37 @@ elif section == "04 Prediction":
     from sklearn.model_selection import train_test_split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    from sklearn.linear_model import LinearRegression
-    model = LinearRegression()
-    model.fit(X_train, y_train)
+    # 初始化模型
+    if model_choice == "Linear Regression":
+        from sklearn.linear_model import LinearRegression
+        model = LinearRegression()
+    else:
+        from xgboost import XGBRegressor
+        model = XGBRegressor(n_estimators=100, learning_rate=0.1, random_state=42)
 
+    model.fit(X_train, y_train)
     predictions = model.predict(X_test)
 
     from sklearn import metrics
-
-    # Define default values
     r2, mae, mse = None, None, None
 
-    # Evaluation
+    st.subheader("📈 Model Evaluation")
     if "R² Score" in selected_metrics:
         r2 = metrics.r2_score(y_test, predictions)
         st.write(f"- **R² Score:** {r2:.3f}")
-
     if "Mean Absolute Error (MAE)" in selected_metrics:
         mae = metrics.mean_absolute_error(y_test, predictions)
         st.write(f"- **MAE:** {mae:,.2f}")
-
     if "Mean Squared Error (MSE)" in selected_metrics:
         mse = metrics.mean_squared_error(y_test, predictions)
         st.write(f"- **MSE:** {mse:,.2f}")
 
-    # Safely display evaluation metrics (only if values exist)
     if r2 is not None:
-        st.markdown(f"**Model R² Score:** {r2:.3f}")
+        st.markdown(f"**Model R² Score:** `{r2:.3f}`")
     if mae is not None:
-        st.markdown(f"**Mean Absolute Error (MAE):** {mae:,.0f} views")
+        st.markdown(f"**Mean Absolute Error (MAE):** `{mae:,.0f}` views")
 
-    st.header("📊 Predict Views for a New Video")
-
+    st.header("🔮 Predict Views for a New Video")
     likes = st.number_input("👍 Number of Likes", 0, 1_000_000, 50000)
     comments = st.number_input("💬 Number of Comments", 0, 500_000, 10000)
     title_length = st.slider("📝 Title Length", 5, 100, 40)
@@ -444,10 +447,84 @@ elif section == "04 Prediction":
     }])
 
     predicted_views = model.predict(input_data)[0]
-    st.success(f"📺 **Predicted Views:** {int(predicted_views):,}")
+    st.success(f"📺 **Predicted Views ({model_choice}):** `{int(predicted_views):,}`")
 
+elif section == "05 Feature Importance & Driving Variables":
+    st.title("🔍 Feature Importance & Driving Variables")
+
+    st.markdown("""
+    This page helps users understand which input variables have the greatest impact on YouTube video view predictions using SHAP (SHapley Additive exPlanations).
+    """)
+
+    import shap
+    import xgboost
+    from xgboost import XGBRegressor
+    from sklearn.model_selection import train_test_split
+
+    df_shap = df.dropna(subset=['views', 'likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_time'])
+    df_shap['publish_month'] = pd.to_datetime(df_shap['publish_time'], errors='coerce').dt.month
+
+    # Select features and target
+    features = ['likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_month']
+    X = df_shap[features]
+    y = df_shap['views']
+
+    # Split data
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Train XGBoost model
+    xgb_model = XGBRegressor(n_estimators=100, learning_rate=0.1, random_state=42)
+    xgb_model.fit(X_train, y_train)
+
+    # Explain predictions using SHAP
+    explainer = shap.Explainer(xgb_model)
+    shap_values = explainer(X_train)
+
+    # Plot summary
+    st.subheader("📊 SHAP Summary Plot (Top Features)")
+    fig_summary = shap.plots.beeswarm(shap_values, max_display=6, show=False)
+    st.pyplot(bbox_inches='tight', dpi=300)
+
+    # Plot bar
+    st.subheader("📈 SHAP Feature Importance (Bar)")
+    fig_bar = shap.plots.bar(shap_values, max_display=6, show=False)
+    st.pyplot(bbox_inches='tight', dpi=300)
+
+    # Interpretation
+    st.markdown("""
+    ### 🔑 Key Takeaways
+
+    - **Publish Hour** is often a key driver: videos posted at certain times may attract more attention.
+    - **Likes and Comments** are strong engagement indicators; their SHAP values show high predictive influence.
+    - **Title Length and Tag Count** help with discoverability via SEO and search ranking on YouTube.
+
+    These insights can guide content creators to refine their strategy and schedule for better performance.
+    """)
+
+    st.success("These insights make the machine learning model explainable and trustworthy.")
+
+elif section == "06 Hyperparameter Tuning":
+    st.title("🔧 MLflow + DAGsHub Hyperparameter Tuning")
+    DAGsHubLogger.set_dagshub_url("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction")
+    mlflow.set_tracking_uri("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction.mlflow")
+    mlflow.set_experiment("youtube_xgb_tuning")
+
+    params = {
+        "n_estimators": 100,
+        "max_depth": 4,
+        "learning_rate": 0.1,
+    }
+
+    with mlflow.start_run():
+        mlflow.log_params(params)
+        model = XGBRegressor(**params)
+        model.fit(X_train, y_train)
+        preds = model.predict(X_test)
+        mse = mean_squared_error(y_test, preds)
+        mlflow.log_metric("mse", mse)
+        st.write(f"MLflow logged MSE: {mse:.2f}")
     
-elif section == "05 Business Prospects":
+elif section == "07 Business Prospects":
     st.markdown("## 📈 05 Business Prospects")
     st.write("This section discusses the implications of model output.")
 

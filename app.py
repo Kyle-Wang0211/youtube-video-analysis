@@ -495,8 +495,9 @@ elif section == "05 Feature Importance & Driving Variables":
     shap.plots.beeswarm(shap_values[:, :6], show=False)
     st.pyplot(fig_beeswarm)
 
+    # Scatter plot Likes vs ShAP value
     st.subheader("🔍 SHAP Scatter Plot (Likes vs SHAP Value)")
-    fig_scatter = plt.figure(figsize=(10, 5))
+    fig_scatter = plt.figure(figsize=(6, 3))
     # 使用 shap_values.values 来获取 numpy 数组
     shap_array = shap_values.values
     plt.scatter(X_train['likes'], shap_array[:, features.index('likes')], alpha=0.6)

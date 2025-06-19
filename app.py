@@ -555,24 +555,33 @@ elif section == "06 Hyperparameter Tuning":
     mlflow.set_tracking_uri("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction.mlflow")
     mlflow.set_experiment("youtube_xgb_tuning")
 
-    params = {
-        "n_estimators": 100,
-        "max_depth": 4,
-        "learning_rate": 0.1,
-    }
+    best_mse = float("inf")
+    best_depth = None
 
-    with mlflow.start_run():
-        mlflow.log_params(params)
-        model = XGBRegressor(**params)
-        model.fit(X_train, y_train)
-        preds = model.predict(X_test)
-        mse = mean_squared_error(y_test, preds)
-        mlflow.log_metric("mse", mse)
-        st.write(f"MLflow logged MSE: {mse:.2f}")
-        
-          # Add RMSE display
-        rmse = np.sqrt(mse)
-        st.write(f"📏 RMSE: {rmse:,.0f} views")
+    for depth in [3, 5, 7]:
+        with mlflow.start_run():
+            params = {"n_estimators": 100, "max_depth": depth, "learning_rate": 0.1}
+            mlflow.log_params(params)
+            model = XGBRegressor(**params)
+            model.fit(X_train, y_train)
+            preds = model.predict(X_test)
+            mse = mean_squared_error(y_test, preds)
+            mlflow.log_metric("mse", mse)
+            if mse < best_mse:
+                best_mse = mse
+                best_depth = depth
+                mlflow.sklearn.log_model(model, "best_model")
+
+    st.markdown(f"**MLflow logged Best MSE:** `{best_mse:,.2f}`")
+    st.markdown(f"**🔧 Best max_depth:** `{best_depth}`")
+    st.markdown(f"**📉 RMSE:** `{np.sqrt(best_mse):,.0f}` views")
+
+    st.markdown("""
+    ### ✅ Experiment Tracking Summary
+    - Tracked multiple runs using different `max_depth` values.
+    - Logged all metrics and parameters with MLflow.
+    - The best performing model (lowest MSE) was saved to DAGsHub.
+    """)
         
     
 elif section == "07 Business Prospects":

@@ -11,6 +11,7 @@ from xgboost import XGBRegressor
 import shap
 import mlflow
 from dagshub import DAGsHubLogger
+import os
 
 st.set_page_config(
     page_title="📊 YouTube Video Analysis APP",
@@ -515,6 +516,8 @@ elif section == "05 Feature Importance & Driving Variables":
 
 elif section == "06 Hyperparameter Tuning":
     st.title("🔧 MLflow + DAGsHub Hyperparameter Tuning")
+    os.environ["MLFLOW_TRACKING_USERNAME"] = "Yusheng-Qian"
+    os.environ["MLFLOW_TRACKING_PASSWORD"] = "fc89fc3a53e2948f33bd036fba14b61528360901"
     mlflow.set_tracking_uri("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction.mlflow")
     mlflow.set_experiment("youtube_xgb_tuning")
 

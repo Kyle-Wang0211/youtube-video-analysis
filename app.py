@@ -493,20 +493,20 @@ elif section == "05 Feature Importance & Driving Variables":
 
     # Plot summary
     st.subheader("📊 SHAP Summary Plot (Top Features)")
-    fig_summary, ax_summary = plt.subplots()
+    fig_beeswarm = plt.figure(figsize=(10, 4))
     shap.plots.beeswarm(shap_values[:, :6], show=False)  # 限制展示前6个变量
     st.pyplot(fig_summary)
 
     # Plot bar
     st.subheader("📈 SHAP Feature Importance (Bar)")
-    fig_bar, ax_bar = plt.subplots()
+    fig_bar = plt.figure(figsize=(8, 4))
     shap.plots.bar(shap_values[:, :6], show=False)
     st.pyplot(fig_bar)
 
     # Plot waterfall
     st.subheader("💧 SHAP Waterfall Plot (Single Sample)")
     sample_index = st.slider("Select a sample index", 0, len(X_train) - 1, 0)
-    fig_waterfall, ax_waterfall = plt.subplots(figsize=(10, 6))
+    fig_waterfall = plt.figure(figsize=(9, 6))
     shap.plots.waterfall(shap_values[sample_index], max_display=6, show=False)
     st.pyplot(fig_waterfall)
 

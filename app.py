@@ -565,22 +565,22 @@ elif section == "06 Hyperparameter Tuning":
     # 训练并记录到 MLflow
     with mlflow.start_run():
         for max_depth in [3, 4, 5]:
-        for learning_rate in [0.05, 0.1]:
-            params = {
-                "n_estimators": 100,
-                "max_depth": max_depth,
-                "learning_rate": learning_rate
-            }
-            model = XGBRegressor(**params)
-            model.fit(X_train, y_train)
-            preds = model.predict(X_test)
+            for learning_rate in [0.05, 0.1]:
+                params = {
+                    "n_estimators": 100,
+                    "max_depth": max_depth,
+                    "learning_rate": learning_rate
+                }
+                model = XGBRegressor(**params)
+                model.fit(X_train, y_train)
+                preds = model.predict(X_test)
 
-            mse = mean_squared_error(y_test, preds)
-            rmse = np.sqrt(mse)
+                mse = mean_squared_error(y_test, preds)
+                rmse = np.sqrt(mse)
 
-            mlflow.log_params(params)
-            mlflow.log_metric("mse", mse)
-            mlflow.log_metric("rmse", rmse)
+                mlflow.log_params(params)
+                mlflow.log_metric("mse", mse)
+                mlflow.log_metric("rmse", rmse)
 
     st.markdown(f"### Parameters: max_depth={max_depth}, learning_rate={learning_rate}")
     st.markdown(f"- **MSE:** `{mse:,.2f}`")

@@ -564,20 +564,27 @@ elif section == "06 Hyperparameter Tuning":
 
     # 训练并记录到 MLflow
     with mlflow.start_run():
-        mlflow.log_params(params)
-        model = XGBRegressor(**params)
-        model.fit(X_train, y_train)
-        preds = model.predict(X_test)
+        for max_depth in [3, 4, 5]:
+        for learning_rate in [0.05, 0.1]:
+            params = {
+                "n_estimators": 100,
+                "max_depth": max_depth,
+                "learning_rate": learning_rate
+            }
+            model = XGBRegressor(**params)
+            model.fit(X_train, y_train)
+            preds = model.predict(X_test)
 
-        mse = mean_squared_error(y_test, preds)
-        rmse = mean_squared_error(y_test, preds, squared=False)
+            mse = mean_squared_error(y_test, preds)
+            rmse = np.sqrt(mse)
 
-        mlflow.log_metric("mse", mse)
-        mlflow.log_metric("rmse", rmse)
+            mlflow.log_params(params)
+            mlflow.log_metric("mse", mse)
+            mlflow.log_metric("rmse", rmse)
 
-    st.markdown(f"**MLflow logged Best MSE:** `{best_mse:,.2f}`")
-    st.markdown(f"**🔧 Best max_depth:** `{best_depth}`")
-    st.markdown(f"**📉 RMSE:** `{np.sqrt(best_mse):,.0f}` views")
+    st.markdown(f"### Parameters: max_depth={max_depth}, learning_rate={learning_rate}")
+    st.markdown(f"- **MSE:** `{mse:,.2f}`")
+    st.markdown(f"- **RMSE:** `{rmse:,.0f}` views")
 
     st.markdown("""
     ### ✅ Experiment Tracking Summary
@@ -585,7 +592,7 @@ elif section == "06 Hyperparameter Tuning":
     - Logged all metrics and parameters with MLflow.
     - The best performing model (lowest MSE) was saved to DAGsHub.
     """)
-        
+
     
 elif section == "07 Business Prospects":
     st.markdown("## 📈 07 Business Prospects")

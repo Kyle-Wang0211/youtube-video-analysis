@@ -503,8 +503,12 @@ elif section == "05 Feature Importance & Driving Variables":
 
     # Waterfall plot for first sample
     st.subheader("🌊 SHAP Waterfall Plot (Example)")
-    fig_waterfall = plt.figure(figsize=(9, 6))
+    import matplotlib.pyplot as plt
+    # 创建新图像容器，控制尺寸
+    fig_waterfall, ax = plt.subplots(figsize=(9, 6))
+    # 使用 SHAP 绘图函数（注意要关闭 show）
     shap.plots.waterfall(shap_values[0], show=False)
+    # 渲染到 Streamlit
     st.pyplot(fig_waterfall)
 
     # Interpretation

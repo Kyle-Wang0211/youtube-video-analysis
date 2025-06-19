@@ -35,7 +35,7 @@ with st.sidebar:
             "02 Business Case & Data Presentation",
             "03 Dataset Visualization",
             "04 Prediction",
-            "05 05 Feature Importance & Driving Variables",
+            "05 Feature Importance & Driving Variables",
             "06 Hyperparameter Tuning",
             "07 Business Prospects"
         ]

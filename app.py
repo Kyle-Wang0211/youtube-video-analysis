@@ -516,6 +516,16 @@ elif section == "05 Feature Importance & Driving Variables":
 
 elif section == "06 Hyperparameter Tuning":
     st.title("🔧 MLflow + DAGsHub Hyperparameter Tuning")
+
+    
+    # 🔁 Prepare data again
+    df2 = df.dropna()
+    df2['publish_month'] = pd.to_datetime(df2['publish_time'], errors='coerce').dt.month
+    features = ['likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_month']
+    X = df2[features]
+    y = df2['views']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
     os.environ["MLFLOW_TRACKING_USERNAME"] = "Yusheng-Qian"
     os.environ["MLFLOW_TRACKING_PASSWORD"] = "fc89fc3a53e2948f33bd036fba14b61528360901"
     mlflow.set_tracking_uri("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction.mlflow")

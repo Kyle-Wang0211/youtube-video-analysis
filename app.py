@@ -478,28 +478,27 @@ elif section == "05 Feature Importance & Driving Variables":
     X = df2[features]
     y = df2['views']
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     model = XGBRegressor(n_estimators=100, max_depth=4, random_state=42)
-    model.fit(X_train, y_train)
+    model.fit(X, y)
 
-    explainer = shap.Explainer(model)
-    shap_values = explainer(X_test)
+    explainer = shap.Explainer(model, X)
+    shap_values = explainer(X)
 
-    st.subheader("SHAP Summary Plot - Beeswarm")
-    fig1, ax1 = plt.subplots()
+    st.subheader("🔍 SHAP Summary Plot")
+    fig1, ax1 = plt.subplots(figsize=(10, 5))
     shap.plots.beeswarm(shap_values, ax=ax1, show=False)
     st.pyplot(fig1)
 
-    st.subheader("SHAP Feature Importance - Bar Chart")
-    fig2, ax2 = plt.subplots()
+    st.subheader("📊 Feature Importance Bar Plot")
+    fig2, ax2 = plt.subplots(figsize=(10, 5))
     shap.plots.bar(shap_values, ax=ax2, show=False)
     st.pyplot(fig2)
 
-    st.subheader("SHAP Waterfall Plot - First Sample")
-    fig3, ax3 = plt.subplots()
-    shap.plots.waterfall(shap_values[0], show=False)
+    st.subheader("💧 SHAP Waterfall Plot (Single Prediction)")
+    sample_index = st.slider("Choose sample index", 0, len(X) - 1, 0)
+    fig3, ax3 = plt.subplots(figsize=(10, 6))
+    shap.plots.waterfall(shap_values[sample_index], max_display=6, show=False)
     st.pyplot(fig3)
-
     # Interpretation
     st.markdown("""
     ### 🔑 Key Takeaways

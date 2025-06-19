@@ -516,7 +516,6 @@ elif section == "05 Feature Importance & Driving Variables":
 
 elif section == "06 Hyperparameter Tuning":
     st.title("🔧 MLflow + DAGsHub Hyperparameter Tuning")
-
     
     # 🔁 Prepare data again
     df2 = df.dropna()
@@ -545,6 +544,11 @@ elif section == "06 Hyperparameter Tuning":
         mse = mean_squared_error(y_test, preds)
         mlflow.log_metric("mse", mse)
         st.write(f"MLflow logged MSE: {mse:.2f}")
+        
+          # Add RMSE display
+        rmse = np.sqrt(mse)
+        st.write(f"📏 RMSE: {rmse:,.0f} views")
+        
     
 elif section == "07 Business Prospects":
     st.markdown("## 📈 07 Business Prospects")

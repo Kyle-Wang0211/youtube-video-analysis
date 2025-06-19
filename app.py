@@ -472,34 +472,33 @@ elif section == "05 Feature Importance & Driving Variables":
     from xgboost import XGBRegressor
     from sklearn.model_selection import train_test_split
 
-    df_shap = df.dropna(subset=['views', 'likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_time'])
-    df_shap['publish_month'] = pd.to_datetime(df_shap['publish_time'], errors='coerce').dt.month
-
-    # Select features and target
+    df2 = df.dropna()
+    df2['publish_month'] = pd.to_datetime(df2['publish_time'], errors='coerce').dt.month
     features = ['likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_month']
-    X = df_shap[features]
-    y = df_shap['views']
+    X = df2[features]
+    y = df2['views']
 
-    # Split data
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = XGBRegressor(n_estimators=100, max_depth=4, random_state=42)
+    model.fit(X_train, y_train)
 
-    # Train XGBoost model
-    xgb_model = XGBRegressor(n_estimators=100, learning_rate=0.1, random_state=42)
-    xgb_model.fit(X_train, y_train)
+    explainer = shap.Explainer(model)
+    shap_values = explainer(X_test)
 
-    # Explain predictions using SHAP
-    explainer = shap.Explainer(xgb_model)
-    shap_values = explainer(X_train)
+    st.subheader("SHAP Summary Plot - Beeswarm")
+    fig1, ax1 = plt.subplots()
+    shap.plots.beeswarm(shap_values, ax=ax1, show=False)
+    st.pyplot(fig1)
 
-    # Plot summary
-    st.subheader("📊 SHAP Summary Plot (Top Features)")
-    fig_summary = shap.plots.beeswarm(shap_values, max_display=6, show=False)
-    st.pyplot(bbox_inches='tight', dpi=300)
+    st.subheader("SHAP Feature Importance - Bar Chart")
+    fig2, ax2 = plt.subplots()
+    shap.plots.bar(shap_values, ax=ax2, show=False)
+    st.pyplot(fig2)
 
-    # Plot bar
-    st.subheader("📈 SHAP Feature Importance (Bar)")
-    fig_bar = shap.plots.bar(shap_values, max_display=6, show=False)
-    st.pyplot(bbox_inches='tight', dpi=300)
+    st.subheader("SHAP Waterfall Plot - First Sample")
+    fig3, ax3 = plt.subplots()
+    shap.plots.waterfall(shap_values[0], show=False)
+    st.pyplot(fig3)
 
     # Interpretation
     st.markdown("""

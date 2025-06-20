@@ -70,7 +70,7 @@ if section == "Home":
 
     st.markdown("""
         ### 🎯 Objective
-        This app aims to help users understand and apply linear regression in analyzing trends and predicting the popularity of YouTube videos. It simplifies complex concepts and enables intuitive interaction with the data.
+        This app is designed to help users explore and apply machine learning techniques—particularly linear regression and XGBoost—to analyze trends and predict the popularity of YouTube videos. Beyond simplifying complex modeling concepts, it also incorporates interactive visualizations, SHAP-based explainability, and real-world business applications, enabling users to gain deeper insights and make informed, data-driven content decisions.
     
         ### 💡 Motivation
         - YouTube content creators, marketers, and analysts need effective tools to anticipate video performance.
@@ -81,6 +81,8 @@ if section == "Home":
         - **Python** & **Streamlit** for building the interface
         - **Pandas**, **Seaborn**, and **Matplotlib** for data processing and visualization
         - **Scikit-learn** for building and evaluating the linear regression model
+        - **XGBoost: For boosting prediction performance and enabling advanced feature importance analysis.
+        - **MLflow & DAGsHub: For tracking experiments, logging metrics, and managing model development workflows.
     
         ### 🧪 Dataset
         The Trending YouTube Video Statistics dataset was downloaded from kaggle.com, includes attributes such as view count, likes, comments, and video duration. These features are used to model and predict video popularity using linear regression.
@@ -91,8 +93,8 @@ if section == "Home":
 elif section == "01 Introduction":
     st.header("🎯 Objective")
     st.markdown("""
-    This project builds an interactive web application that uses linear regression to predict the number of views a YouTube video might receive, based on pre-publication features such as likes (early likes), comments, title length, tag count, and upload time.
-    Our goal is to provide a transparent, educational, and practical tool for exploring what factors may contribute to video popularity on YouTube.
+   This project delivers an interactive web application that leverages both linear regression and XGBoost models to predict the potential view count of a YouTube video using pre-publication features such as early likes, comments, title length, tag count, and upload time.
+The aim is to provide a transparent, educational, and practical platform that not only demystifies predictive modeling but also helps creators and analysts understand which factors drive video performance—empowering them to make data-informed decisions before publishing.
     """)
 
     st.header("🔍 Background")
@@ -111,9 +113,11 @@ elif section == "01 Introduction":
 
     st.header("🛠️ Technologies Used")
     st.markdown("""
-    - **Streamlit** for interface development  
-    - **Pandas**, **Seaborn**, and **Matplotlib** for data processing and visualization  
-    - **Scikit-learn** for training and evaluating the linear regression model
+    - **Python** & **Streamlit** for building the interface
+    - **Pandas**, **Seaborn**, and **Matplotlib** for data processing and visualization
+    - **Scikit-learn** for building and evaluating the linear regression model
+    - **XGBoost: For boosting prediction performance and enabling advanced feature importance analysis.
+    - **MLflow & DAGsHub: For tracking experiments, logging metrics, and managing model development workflows.
     """)
 
     st.header("📊 Dataset Overview")

@@ -547,43 +547,95 @@ elif section == "06 Hyperparameter Tuning":
     st.title("🔧 MLflow + DAGsHub Hyperparameter Tuning")
 
     # 数据准备
-    df2 = df.dropna()
-    df2['publish_month'] = pd.to_datetime(df2['publish_time'], errors='coerce').dt.month
+    #df2 = df.dropna()
+    #df2['publish_month'] = pd.to_datetime(df2['publish_time'], errors='coerce').dt.month
+    #features = ['likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_month']
+    #X = df2[features]
+    #y = df2['views']
+    #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    #os.environ["MLFLOW_TRACKING_USERNAME"] = "Yusheng-Qian"
+    #os.environ["MLFLOW_TRACKING_PASSWORD"] = "fc89fc3a53e2948f33bd036fba14b61528360901"
+    #mlflow.set_tracking_uri("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction.mlflow")
+   # mlflow.set_experiment("youtube_xgb_tuning")
+    #params = {
+        #"n_estimators": 100,
+        #"max_depth": 4,
+       # "learning_rate": 0.1,
+    #}
+
+    #with mlflow.start_run():
+        #mlflow.log_params(params)
+       # model = XGBRegressor(**params)
+       # model.fit(X_train, y_train)
+       # preds = model.predict(X_test)
+       # mse = mean_squared_error(y_test, preds)
+       # mlflow.log_metric("mse", mse)
+       # st.write(f"📉 MLflow logged MSE: {mse:,.2f}")
+
+        # Add RMSE display
+       # rmse = np.sqrt(mse)
+       # st.write(f"📏 RMSE: {rmse:,.0f} views")
+
+    st.markdown("""
+    This section allows you to experiment with different models and hyperparameters, log results to MLflow, and compare which model performs best.
+    """)
+
+    # Select models to compare
+    model_options = ["Linear Regression", "Random Forest", "XGBoost"]
+    selected_models = st.multiselect("Select models to train and compare", model_options, default=["Linear Regression", "XGBoost"])
+
+    # Prepare dataset
+    df_tune = df.dropna()
+    df_tune['publish_month'] = pd.to_datetime(df_tune['publish_time'], errors='coerce').dt.month
     features = ['likes', 'comment_count', 'title_length', 'tag_count', 'publish_hour', 'publish_month']
-    X = df2[features]
-    y = df2['views']
+    X = df_tune[features]
+    y = df_tune['views']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+    # Set MLflow
     os.environ["MLFLOW_TRACKING_USERNAME"] = "Yusheng-Qian"
     os.environ["MLFLOW_TRACKING_PASSWORD"] = "fc89fc3a53e2948f33bd036fba14b61528360901"
     mlflow.set_tracking_uri("https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction.mlflow")
     mlflow.set_experiment("youtube_xgb_tuning")
 
-    params = {
-        "n_estimators": 100,
-        "max_depth": 4,
-        "learning_rate": 0.1,
-    }
+    results = []
 
-    with mlflow.start_run():
-        mlflow.log_params(params)
-        model = XGBRegressor(**params)
-        model.fit(X_train, y_train)
-        preds = model.predict(X_test)
-        mse = mean_squared_error(y_test, preds)
-        mlflow.log_metric("mse", mse)
-        st.write(f"📉 MLflow logged MSE: {mse:,.2f}")
+    for model_name in selected_models:
+        with mlflow.start_run():
+            if model_name == "Linear Regression":
+                model = LinearRegression()
+                params = {}
+            elif model_name == "Random Forest":
+                params = {"n_estimators": 100, "max_depth": 5}
+                model = RandomForestRegressor(**params)
+            elif model_name == "XGBoost":
+                params = {"n_estimators": 100, "max_depth": 4, "learning_rate": 0.1}
+                model = XGBRegressor(**params)
 
-        # Add RMSE display
-        rmse = np.sqrt(mse)
-        st.write(f"📏 RMSE: {rmse:,.0f} views")
+            model.fit(X_train, y_train)
+            preds = model.predict(X_test)
 
-    st.markdown("""
+            mse = mean_squared_error(y_test, preds)
+            rmse = np.sqrt(mse)
+            r2 = r2_score(y_test, preds)
+
+            mlflow.log_params(params)
+            mlflow.log_metrics({"mse": mse, "rmse": rmse, "r2": r2})
+
+            results.append({"Model": model_name, "MSE": mse, "RMSE": rmse, "R2": r2})
+
+    result_df = pd.DataFrame(results).sort_values("R2", ascending=False)
+    st.subheader("📋 Model Comparison Results")
+    st.dataframe(result_df, use_container_width=True)
+
+    best_model = result_df.iloc[0]
+       st.markdown("""
     ### ✅ Experiment Tracking Summary
     - Tracked multiple runs using different `max_depth` values.
     - Logged all metrics and parameters with MLflow.
     - The best performing model (lowest MSE) was saved to DAGsHub.
     """)
+    st.success(f"🏆 Best Performing Model: {best_model['Model']} with R² = {best_model['R2']:.3f}")
 
     
 elif section == "07 Business Prospects":

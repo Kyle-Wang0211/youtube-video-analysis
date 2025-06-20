@@ -630,7 +630,15 @@ elif section == "06 Hyperparameter Tuning":
 
     best_model = result_df.iloc[0]
     st.markdown("""
-    
+
+    st.markdown("""
+    <a href="https://dagshub.com/Yusheng-Qian/YouTubeVideoPrediction.mlflow" target="_blank">
+    <button style='padding:10px; background-color:#4CAF50; color:white; border:none; border-radius:5px;'>
+        📊 Open MLflow Dashboard
+    </button>
+    </a>
+    """, unsafe_allow_html=True)
+
     ### ✅ Experiment Tracking Summary
     - Tracked multiple runs using different `max_depth` values.
     - Logged all metrics and parameters with MLflow.

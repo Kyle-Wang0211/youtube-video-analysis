@@ -81,8 +81,8 @@ if section == "Home":
         - **Python** & **Streamlit** for building the interface
         - **Pandas**, **Seaborn**, and **Matplotlib** for data processing and visualization
         - **Scikit-learn** for building and evaluating the linear regression model
-        - **XGBoost: For boosting prediction performance and enabling advanced feature importance analysis.
-        - **MLflow & DAGsHub: For tracking experiments, logging metrics, and managing model development workflows.
+        - **XGBoost**: For boosting prediction performance and enabling advanced feature importance analysis.
+        - **MLflow & DAGsHub**: For tracking experiments, logging metrics, and managing model development workflows.
     
         ### 🧪 Dataset
         The Trending YouTube Video Statistics dataset was downloaded from kaggle.com, includes attributes such as view count, likes, comments, and video duration. These features are used to model and predict video popularity using linear regression.

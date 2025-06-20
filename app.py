@@ -629,7 +629,8 @@ elif section == "06 Hyperparameter Tuning":
     st.dataframe(result_df, use_container_width=True)
 
     best_model = result_df.iloc[0]
-       st.markdown("""
+    st.markdown("""
+    
     ### ✅ Experiment Tracking Summary
     - Tracked multiple runs using different `max_depth` values.
     - Logged all metrics and parameters with MLflow.

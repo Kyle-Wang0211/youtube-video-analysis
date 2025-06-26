@@ -493,39 +493,50 @@ elif section == "05 Feature Importance & Driving Variables":
     explainer = shap.Explainer(xgb_model)
     shap_values = explainer(X_train)
 
-    # Beeswarm plot
+    # 用户选择要显示的 SHAP 图类型
+shap_plot_option = st.selectbox(
+    "🎨 Select SHAP Plot to Display",
+    [
+        "Summary Plot (Beeswarm)",
+        "SHAP Scatter Plot (Likes vs SHAP Value)",
+        "SHAP Feature Importance (Bar)",
+        "SHAP Waterfall Plot (Example)"
+    ]
+)
+
+# 根据用户选择展示对应图像
+if shap_plot_option == "Summary Plot (Beeswarm)":
     st.subheader("📊 SHAP Summary Plot (Beeswarm)")
     fig_beeswarm = plt.figure(figsize=(10, 4))
     shap.plots.beeswarm(shap_values[:, :6], show=False)
     st.pyplot(fig_beeswarm)
+    plt.close(fig_beeswarm)
 
-    # Scatter plot Likes vs ShAP value
+elif shap_plot_option == "SHAP Scatter Plot (Likes vs SHAP Value)":
     st.subheader("🔍 SHAP Scatter Plot (Likes vs SHAP Value)")
     fig_scatter = plt.figure(figsize=(6, 3))
-    # 使用 shap_values.values 来获取 numpy 数组
     shap_array = shap_values.values
     plt.scatter(X_train['likes'], shap_array[:, features.index('likes')], alpha=0.6)
     plt.xlabel("Likes")
     plt.ylabel("SHAP Value for Likes")
     plt.title("Likes vs SHAP Value")
     st.pyplot(fig_scatter)
+    plt.close(fig_scatter)
 
-    # Bar plot
+elif shap_plot_option == "SHAP Feature Importance (Bar)":
     st.subheader("📈 SHAP Feature Importance (Bar)")
     fig_bar = plt.figure(figsize=(8, 4))
     shap.plots.bar(shap_values[:, :6], show=False)
     st.pyplot(fig_bar)
+    plt.close(fig_bar)
 
-    # Waterfall plot for first sample
+elif shap_plot_option == "SHAP Waterfall Plot (Example)":
     st.subheader("🌊 SHAP Waterfall Plot (Example)")
-    import matplotlib.pyplot as plt
-    # 创建新图像容器，控制尺寸
-    fig_waterfall, ax = plt.subplots(figsize=(9, 6))
-    # 使用 SHAP 绘图函数（注意要关闭 show）
+    fig_waterfall = plt.figure(figsize=(9, 6))
     shap.plots.waterfall(shap_values[0], show=False)
-    # 渲染到 Streamlit
     st.pyplot(fig_waterfall)
-    plt.clf()
+    plt.close(fig_waterfall)
+
 
 
     # Interpretation
